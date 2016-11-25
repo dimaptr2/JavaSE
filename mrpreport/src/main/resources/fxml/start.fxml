@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <AnchorPane layoutX="22.0" layoutY="18.0" prefHeight="364.0" prefWidth="556.0">
+         <children>
+            <Label layoutX="92.0" layoutY="119.0" text="Пользователь:" />
+         </children>
+      </AnchorPane>
+   </children>
+</Pane>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/main.css">
+    <script src="js/main.js"></script>
+    <title>ППМ</title>
+
+</head>
+
+<body>
+
+    <form action="/mrp" id="mainForm" method="post">
+
+        <h2 class="central">Отчет: планирование потребностей</h2>
+
+    <table border="0" align="center">
+
+       <tr>
+           <td>За период</td>
+           <td>
+               <input type="month" id="fromMonth" name="fromMonth"
+                      required placeholder="2016-01"/>
+           </td>
+       </tr>
+
+       <tr>
+           <td>Материалы</td>
+           <td>
+               <input id="fromMatnr" name="fromMatnr" type="text" maxlength="18"
+                      required placeholder="000000000010000000"/>
+               <input id="toMatnr" name="toMatnr" type="text" maxlength="18"
+                      required placeholder="000000000019999999"/>
+           </td>
+       </tr>
+       <tr>
+           <td>Группа закупок</td>
+           <td>
+               <input id="purGrp" name="purGrp" type="text"
+                      required ondblclick="" placeholder="003" />
+           </td>
+       </tr>
+       <tr>
+           <td></td>
+           <td>
+               <button type="submit" id="submitBtn" name="submitBtn"
+                       action="output.html" formmethod="post" value="Run">
+                  <font color="darkgreen"><b>выполнить</b></font>
+               </button>
+           </td>
+       </tr>
+
+    </table>
+
+    </form>
+
+</body>
+</html>

@@ -1,0 +1,65 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        mavenLocal()
+    }
+}
+
+// Properties of all projects (jar files)
+allprojects {
+
+    apply plugin: 'java'
+    apply plugin: 'idea'
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+
+    // Jetty server API
+    compile("org.eclipse.jetty:jetty-server:9.4.0.M0")
+    compile("org.eclipse.jetty:jetty-webapp:9.4.0.M0")
+    compile("org.eclipse.jetty:jetty-websocket:8.1.19.v20160209")
+
+    // JDBC driver for remote MySQL database
+    compile("mysql:mysql-connector-java:5.1.39")
+
+    // Hibernate
+//    compile("org.hibernate:hibernate-core:5.2.1.Final")
+//    compile("org.eclipse.persistence:javax.persistence:2.1.1")
+
+    // Templater
+    compile("org.freemarker:freemarker:2.3.20")
+
+    // Berkeley DB latest Java Edition
+    compile("com.sleepycat:je:7.0.6")
+
+    // JUnit testing
+    testCompile("junit:junit:4.12")
+
+
+} // end of dependencies sections
+
+jar {
+
+    baseName = 'mrpviewer'
+    version = '1.4'
+
+    manifest {
+        attributes(
+                'Main-Class': 'ru.velkomfood.visual.mrp.Launcher'
+        )
+    }
+
+    // For the uber-jar archive building, that contains all dependencies.
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+
+} // end of Jar task
+
+

@@ -1,0 +1,125 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>ru.velkomfood.mysap.mysql</groupId>
+  <artifactId>mrpreport</artifactId>
+  <packaging>jar</packaging>
+  <version>1.2</version>
+  <name>absence Maven Webapp</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+    <maven.compiler.version>3.5.1</maven.compiler.version>
+    <maven.jar.version>2.6</maven.jar.version>
+    <maven.javafx.plugin.version>8.5.0</maven.javafx.plugin.version>
+    <java.version>1.8</java.version>
+    <main.package>ru.velkomfood.mrp.client</main.package>
+    <maven.local.repo>C:/Users/DPETROV/.m2/repository</maven.local.repo>
+    <!--<lib.dir>/usr/sap/JCo</lib.dir>-->
+  </properties>
+
+  <dependencies>
+
+    <!-- http://mvnrepository.com/artifact/junit/junit -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+    </dependency>
+
+    <!-- SAP Java SapConnector (local file dependency) -->
+    <!--<dependency>-->
+      <!--<groupId>sapjco3</groupId>-->
+      <!--<artifactId>sapjco3</artifactId>-->
+      <!--<scope>system</scope>-->
+      <!--<version>3.0</version>-->
+      <!--<systemPath>${lib.dir}/sapjco3.jar</systemPath>-->
+    <!--</dependency>-->
+
+    <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>5.1.39</version>
+    </dependency>
+
+    <!-- Apache POI API for Microsoft Office -->
+    <!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
+    <dependency>
+      <groupId>org.apache.poi</groupId>
+      <artifactId>poi</artifactId>
+      <version>3.14</version>
+    </dependency>
+
+    <!-- Additional control elements for Standard JavaFX applications -->
+     <!--https://mvnrepository.com/artifact/org.controlsfx/controlsfx-->
+    <!--<dependency>-->
+      <!--<groupId>org.controlsfx</groupId>-->
+      <!--<artifactId>controlsfx</artifactId>-->
+      <!--<version>8.40.11</version>-->
+    <!--</dependency>-->
+
+  </dependencies>
+
+
+  <!-- Additional repositories -->
+  <repositories>
+
+  </repositories>
+
+  <pluginRepositories>
+
+  </pluginRepositories>
+
+<!-- Build options -->
+  <build>
+
+    <plugins>
+
+      <!-- Maven plugins -->
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${maven.compiler.version}</version>
+        <configuration>
+          <source>${java.version}</source>
+          <target>${java.version}</target>
+        </configuration>
+      </plugin>
+
+      <!--<plugin>-->
+        <!--<groupId>org.apache.maven.plugins</groupId>-->
+        <!--<artifactId>maven-jar-plugin</artifactId>-->
+        <!--<version>${maven.jar.version}</version>-->
+        <!--<configuration>-->
+          <!--<archive>-->
+            <!--<manifest>-->
+              <!--<mainClass>${main.package}.Launcher</mainClass>-->
+              <!--<addClasspath>true</addClasspath>-->
+              <!--<classpathMavenRepositoryLayout>true</classpathMavenRepositoryLayout>-->
+              <!--<classpathPrefix>${maven.local.repo}</classpathPrefix>-->
+            <!--</manifest>-->
+            <!--&lt;!&ndash;<manifestEntries>&ndash;&gt;-->
+              <!--&lt;!&ndash;<Class-Path>${lib.dir}/sapjco3.jar</Class-Path>&ndash;&gt;-->
+            <!--&lt;!&ndash;</manifestEntries>&ndash;&gt;-->
+          <!--</archive>-->
+        <!--</configuration>-->
+      <!--</plugin>-->
+
+      <!-- Maven JavaFX plugin -->
+      <plugin>
+        <groupId>com.zenjava</groupId>
+        <artifactId>javafx-maven-plugin</artifactId>
+        <version>${maven.javafx.plugin.version}</version>
+        <configuration>
+          <vendor>ru.velkomfood</vendor>
+          <mainClass>${main.package}.Launcher</mainClass>
+        </configuration>
+      </plugin>
+
+    </plugins>
+
+  </build>
+
+</project>

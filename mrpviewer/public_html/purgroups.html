@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/main.css">
+    <script src="js/main.js"></script>
+    <title>Purchase Groups</title>
+</head>
+<body>
+    <div id="pgmodal" name="pgmodal" align="center" class="modal">
+        <div class="modal-content">
+            <table border="0">
+                <#list groups as purGroup>
+                    <tr>
+                        <td>${purGroup.checked}</td>
+                        <td>${purGroup.id}</td>
+                        <td>${purGroup.description}</td>
+                    </tr>
+                </#list>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

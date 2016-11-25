@@ -1,0 +1,119 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>ru.velkomfood.mysap.mysql</groupId>
+  <artifactId>saptomysql</artifactId>
+  <packaging>jar</packaging>
+  <version>1.0.7</version>
+  <name>absence Maven Webapp</name>
+  <url>http://maven.apache.org</url>
+
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>1.3.5.RELEASE</version>
+  </parent>
+  
+  <properties>
+    <maven.compiler.version>3.5.1</maven.compiler.version>
+    <maven.jar.version>2.6</maven.jar.version>
+    <java.version>1.8</java.version>
+    <main.package>ru.velkomfood.mysap.mysql</main.package>
+    <maven.local.repo>/home/dpetrov/.m2/repository</maven.local.repo>
+    <lib.dir>/usr/sap/JCo</lib.dir>
+    <berkeley.db.version>7.0.6</berkeley.db.version>
+  </properties>
+
+  <dependencies>
+
+    <!-- http://mvnrepository.com/artifact/junit/junit -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+    </dependency>
+
+    <!-- SAP Java SapConnector (local file dependency) -->
+    <dependency>
+      <groupId>sapjco3</groupId>
+      <artifactId>sapjco3</artifactId>
+      <scope>system</scope>
+      <version>3.0</version>
+      <systemPath>${lib.dir}/sapjco3.jar</systemPath>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>5.1.39</version>
+    </dependency>
+
+    <!-- Berkeley DB latest version, Java Edition -->
+    <dependency>
+      <groupId>com.sleepycat</groupId>
+      <artifactId>je</artifactId>
+      <version>${berkeley.db.version}</version>
+    </dependency>
+
+  </dependencies>
+
+
+  <!-- Additional repositories -->
+  <repositories>
+
+    <!-- Special Oracle Maven repository -->
+    <repository>
+      <id>oracleReleases</id>
+      <name>Oracle Released Java Packages</name>
+      <url>http://download.oracle.com/maven</url>
+      <layout>default</layout>
+    </repository>
+
+  </repositories>
+
+  <pluginRepositories>
+
+  </pluginRepositories>
+
+<!-- Build options -->
+  <build>
+
+    <plugins>
+
+      <!-- Maven plugins -->
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${maven.compiler.version}</version>
+        <configuration>
+          <source>${java.version}</source>
+          <target>${java.version}</target>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>${maven.jar.version}</version>
+        <configuration>
+          <archive>
+            <manifest>
+              <mainClass>${main.package}.Launcher</mainClass>
+              <addClasspath>true</addClasspath>
+              <classpathMavenRepositoryLayout>true</classpathMavenRepositoryLayout>
+              <classpathPrefix>${maven.local.repo}</classpathPrefix>
+            </manifest>
+            <manifestEntries>
+              <Class-Path>${lib.dir}/sapjco3.jar</Class-Path>
+            </manifestEntries>
+          </archive>
+        </configuration>
+      </plugin>
+
+    </plugins>
+
+  </build>
+
+</project>

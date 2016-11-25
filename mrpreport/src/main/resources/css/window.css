@@ -1,0 +1,72 @@
+
+.root {
+     -fx-background-image: url("background.jpg");
+}
+
+.label {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+    -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
+}
+
+#scene-text {
+   -fx-font-size: 32px;
+   -fx-font-family: "Arial Black";
+   -fx-fill: #818181;
+   -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );
+}
+
+#action-target {
+  -fx-fill: FIREBRICK;
+  -fx-font-weight: bold;
+  -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
+}
+
+/* Buttons */
+#enter-button {
+        -fx-text-fill: white;
+        -fx-font-family: "Arial Narrow";
+        -fx-font-weight: bold;
+        -fx-background-color: linear-gradient(#61a2b1, #2A5058);
+        -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+}
+
+/* List's design */
+.list-cell:filled:selected:focused, .list-cell:filled:selected {
+    /* 3:, 4: */
+    -fx-background-color: linear-gradient(#333 0%, #777 25%, #aaa 75%, #eee 100%);
+    -fx-text-fill: white; /* 5 */
+}
+
+.list-cell { -fx-text-fill: black; /* 5 */ }
+.list-cell:odd { -fx-background-color: white; /* 1 */ }
+.list-cell:even { -fx-background-color: #8f8; /* for information */ }
+.list-cell:filled:hover {
+    -fx-background-color: #00f; /* 2 */
+    -fx-text-fill: white; /* 5 */
+}
+
+/* Color scheme of rows */
+#priority-high {
+  -fx-control-inner-background: firebrick;
+  -fx-accent: derive(-fx-control-inner-background, -40%);
+  -fx-cell-hover-color: derive(-fx-control-inner-background, -20%);
+}
+
+/*
+Pseudo class 'up' will change the row background
+ color to green when activated
+ */
+.table-row-cell:up
+{
+    -fx-background-color: #007054;
+}
+
+/*
+Pseudo class 'down' will change the row background
+color to red when activated
+*/
+.table-row-cell:down {
+    -fx-background-color: #A30029;
+}

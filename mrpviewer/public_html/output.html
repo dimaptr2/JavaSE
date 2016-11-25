@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/main.css">
+    <script src="js/main.js"></script>
+    <title>Вывод списка ППМ</title>
+
+</head>
+
+<body>
+    <div align="center">
+
+            <h2>Планирование потребностей за ${year} год</h2>
+
+            <table border="1">
+                <tr>
+
+                    <th>Материал</th>
+                    <th>Название материала</th>
+                    <th>Завод</th>
+                    <th>Год</th>
+                    <th>ГрЗакупок</th>
+                    <th>Наименование ГрЗакупок</th>
+                    <th>ЕИ</th>
+                    <th>Текущий запас</th>
+                    <th>Январь</th>
+                    <th>Февраль</th>
+                    <th>Март</th>
+                    <th>Апрель</th>
+                    <th>Май</th>
+                    <th>Июнь</th>
+                    <th>Июль</th>
+                    <th>Август</th>
+                    <th>Сентябрь</th>
+                    <th>Октябрь</th>
+                    <th>Ноябрь</th>
+                    <th>Декабрь</th>
+                </tr>
+
+                <#list totals as total>
+                    <tr>
+                        <td><font color="darkcyan">${total.material}</font></td>
+                        <td><font color="darkcyan">${total.matDescription}</font></td>
+                        <td>${total.plant}</td>
+                        <td>${total.year}</td>
+                        <td>${total.purchaseGroup}</td>
+                        <td>${total.nameOfPurGroup}</td>
+                        <td>${total.baseUnit}</td>
+                        <td><font color="blue">${total.stock}</font></td>
+                        <td><font color="blue">${total.req01}</font></td>
+                        <td><font color="blue">${total.req02}</font></td>
+                        <td><font color="blue">${total.req03}</font></td>
+                        <td><font color="blue">${total.req04}</font></td>
+                        <td><font color="blue">${total.req05}</font></td>
+                        <td><font color="blue">${total.req06}</font></td>
+                        <td><font color="blue">${total.req07}</font></td>
+                        <td><font color="blue">${total.req08}</font></td>
+                        <td><font color="blue">${total.req09}</font></td>
+                        <td><font color="blue">${total.req10}</font></td>
+                        <td><font color="blue">${total.req11}</font></td>
+                        <td><font color="blue">${total.req12}</font></td>
+                    </tr>
+                </#list>
+
+            </table>
+
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,54 @@
+buildscript {
+    dependencies {
+        classpath group: 'de.dynamicfiles.projects.gradle.plugins', name: 'javafx-gradle-plugin', version: '8.5.2'
+    }
+    repositories {
+        mavenLocal()
+        mavenCentral()
+		flatDir {
+			dirs 'C:/usr/sap/jco'
+		}
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'javafx-gradle-plugin'
+
+allprojects {
+	sourceCompatibility = 1.8
+	targetCompatibility = 1.8
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+	flatDir {
+			dirs 'C:/usr/sap/jco'
+		}
+}
+
+dependencies {
+
+    // SAP Java Connector
+    compile("sapjco3:sapjco3:3.0")
+}
+
+jfx {
+    verbose = true
+    jfxAppOutputDir = "build/jfx/app"
+    jfxMainAppJarName = "copadownload-jfx.jar"
+    // minimal requirement for jfxJar-task
+    mainClass = 'ru.velkomfood.mysap.copa.download.Launcher'	
+    // minimal requirement for jfxNative-task
+    vendor = 'ru.velkomfood.do0058'
+}
+
+// After the building of jar-file we must copy into output directory the
+// native library.
+task copyNativeLibrary {
+    copy {
+        from "C:/usr/sap/jco/sapjco3.dll"
+        into "build/jfx/app/lib"
+    }
+}

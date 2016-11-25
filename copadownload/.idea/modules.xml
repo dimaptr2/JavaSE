@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/copadownload.iml" filepath="$PROJECT_DIR$/.idea/modules/copadownload.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/copadownload_main.iml" filepath="$PROJECT_DIR$/.idea/modules/copadownload_main.iml" group="copadownload" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/copadownload_test.iml" filepath="$PROJECT_DIR$/.idea/modules/copadownload_test.iml" group="copadownload" />
+    </modules>
+  </component>
+</project>
