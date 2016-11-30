@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Gradle: cdi-api-2.0-EDR2:cdi-api-2.0-EDR2:2.0-EDR2">
+    <CLASSES>
+      <root url="jar:///usr/sap/velkomfood.ru/cdi-api-2.0-EDR2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

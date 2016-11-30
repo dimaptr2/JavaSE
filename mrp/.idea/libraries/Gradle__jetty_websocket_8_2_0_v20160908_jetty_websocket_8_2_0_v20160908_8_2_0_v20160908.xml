@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Gradle: jetty-websocket-8.2.0.v20160908:jetty-websocket-8.2.0.v20160908:8.2.0.v20160908">
+    <CLASSES>
+      <root url="jar:///usr/sap/velkomfood.ru/jetty-websocket-8.2.0.v20160908.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

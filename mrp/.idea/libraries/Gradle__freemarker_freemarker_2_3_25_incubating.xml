@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Gradle: freemarker:freemarker:2.3.25-incubating">
+    <CLASSES>
+      <root url="jar:///usr/sap/velkomfood.ru/freemarker.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

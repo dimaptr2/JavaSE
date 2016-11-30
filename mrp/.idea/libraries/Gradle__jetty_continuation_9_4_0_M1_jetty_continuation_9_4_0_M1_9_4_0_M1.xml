@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Gradle: jetty-continuation-9.4.0.M1:jetty-continuation-9.4.0.M1:9.4.0.M1">
+    <CLASSES>
+      <root url="jar:///usr/sap/velkomfood.ru/jetty-continuation-9.4.0.M1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

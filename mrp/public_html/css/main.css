@@ -1,0 +1,93 @@
+/* ----- Basic settings ------ */
+
+body {
+    background: AliceBlue;
+    color: Black;
+    font-family: font-family: "Times New Roman", Times, serif;
+}
+
+.header-style {
+    text-align: center;
+    font-style: normal;
+    text-shadow:4px 4px 8px Gray;
+}
+
+.error-style {
+    text-align: center;
+    font-style: Bold;
+    color: Red;
+/*    text-shadow:4px 4px 8px DarkGray; */
+}
+
+/* Positions */
+
+.left {
+    float: left;
+    width: 300px;
+    background-color: PowderBlue;
+    text-shadow:4px 4px 8px Gray;
+}
+
+.right {
+    float: right;
+    width: 300px;
+    background-color: PowderBlue;
+    text-shadow:4px 4px 8px Gray;
+}
+
+.center {
+    margin: auto;
+    float: center;
+    width: 40%;
+    border: 1px;
+    padding: 10px;
+    background-color: PowderBlue;
+    text-shadow:4px 4px 8px Gray;
+
+}
+
+/* Command buttons, forms, tables */
+
+.input-year {
+    float: rigth;
+    color: Black;
+    text-shadow: 4px 4px 8px Gray;
+}
+
+.submit-button {
+    color: Black;
+    border: 1px solid WhiteSmoke;
+    text-shadow:4px 4px 8px Gray;
+}
+
+.center-div-for-table {
+    margin: auto;
+    float: center;
+    width: 95%;
+    border: 1px;
+    padding: 10px;
+    background-color: Azure;
+  /*  text-shadow:4px 8px 8px GhostWhite; */
+}
+
+.center-output-table {
+    border: 1px solid Black;
+   /* border-collapse: collapse; */
+    color: Black;
+   /* border-collapse: collapse; */
+    text-align: left;
+  /* text-shadow:4px 8px 8px Gray; */
+}
+
+th, td {
+    border: 1px solid Black;
+    padding: 15px;
+}
+
+.tab-center-align {
+    text-align: center;
+}
+
+.tab-left-align {
+    text-align: left;
+}

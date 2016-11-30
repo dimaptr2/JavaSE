@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/main.css">
+    <script src="js/main.js"></script>
+    <title>MRP list</title>
+</head>
+<body onload="setCurrentDate();">
+<h1 class="header-style">ППМ за 6 месяцев</h1>
+<div id="output-table">
+    <center>
+        <table class="center-output-table" id="central-table" name="central-table">
+            <!-- Header of this table -->
+            <tr>
+                <th>Материал</th>
+                <th>Наименование</th>
+                <th>Склад</th>
+                <th>ГрЗакупок</th>
+                <th>ЕИ</th>
+                <th>СвобЗапас</th>
+                <th>ЗапасКК</th>
+                <th>БлокЗапас</th>
+                <#list tabHeader as row>
+                    <th>${row}</th>
+                </#list>
+            </tr>
+            <!-- Body of this table -->
+            <tr>
+
+            </tr>
+        </table>
+        <br><br>
+        <p id="current-date"></p>
+    </center>
+</div>
+</body>
+</html>

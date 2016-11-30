@@ -1,0 +1,72 @@
+buildscript {
+    repositories {
+        flatDir {
+            dirs '/usr/sap/velkomfood.ru'
+        }
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+
+allprojects {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+}
+
+// Repositories definition
+repositories {
+    flatDir {
+        dirs '/usr/sap/velkomfood.ru'
+    }
+}
+
+// Dependencies definitions
+dependencies {
+
+    // Standard Java EE API
+    compile("javax.servlet-api-3.1.0:javax.servlet-api-3.1.0:3.1.0")
+    compile("javax.annotation-api-1.3:javax.annotation-api-1.3:1.3")
+    compile("javax.websocket-api-1.1:javax.websocket-api-1.1:1.1")
+    compile("validation-api-1.1.0.Final:validation-api-1.1.0.Final:1.1.0.Final")
+    compile("cdi-api-2.0-EDR2:cdi-api-2.0-EDR2:2.0-EDR2")
+
+    // Jetty server API
+    compile("jetty-server-9.4.0.M1:jetty-server-9.4.0.M1:9.4.0.M1")
+    compile("jetty-util-9.4.0.M1:jetty-util-9.4.0.M1:9.4.0.M1")
+    compile("jetty-http-9.4.0.M1:jetty-http-9.4.0.M1:9.4.0.M1")
+    compile("jetty-websocket-8.2.0.v20160908:jetty-websocket-8.2.0.v20160908:8.2.0.v20160908")
+    compile("jetty-annotations-9.4.0.M1:jetty-annotations-9.4.0.M1:9.4.0.M1")
+    compile("jetty-continuation-9.4.0.M1:jetty-continuation-9.4.0.M1:9.4.0.M1")
+    compile("jetty-io-9.4.0.M1:jetty-io-9.4.0.M1:9.4.0.M1")
+    compile("jetty-xml-9.4.0.M1:jetty-xml-9.4.0.M1:9.4.0.M1")
+    compile("jetty-security-9.4.0.M1:jetty-security-9.4.0.M1:9.4.0.M1")
+    compile("jetty-plus-9.4.0.M1:jetty-plus-9.4.0.M1:9.4.0.M1")
+    compile("jetty-servlet-9.4.0.M1:jetty-servlet-9.4.0.M1:9.4.0.M1")
+    compile("jetty-servlets-9.4.0.M1:jetty-servlets-9.4.0.M1:9.4.0.M1")
+    compile("jetty-webapp-9.4.0.M1:jetty-webapp-9.4.0.M1:9.4.0.M1")
+
+    // Freemarker 2.3.25-incubating
+    compile("freemarker:freemarker:2.3.25-incubating")
+
+    // SAP Java Connector
+    compile("sapjco3:sapjco3:3.0")
+
+    // Xerial JDBC for SQLite
+    compile("sqlite-jdbc-3.8.11.2:sqlite-jdbc-3.8.11.2:3.8.11.2")
+
+}
+
+jar {
+    baseName = 'mrpserver'
+    version = 1.3
+    manifest {
+        attributes(
+                'Implementation-Title': 'MRP Server',
+                'Implementation-Version': version,
+                'Class-Path': configurations.compile.collect { '/usr/sap/velkomfood.ru/' + it.getName() }.join(' '),
+                'Main-Class': 'ru.velkomfood.mrp.server.Launcher'
+
+        )
+    }
+}
