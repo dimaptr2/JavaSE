@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sapsync.iml" filepath="$PROJECT_DIR$/.idea/modules/sapsync.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sapsync_main.iml" filepath="$PROJECT_DIR$/.idea/modules/sapsync_main.iml" group="sapsync" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sapsync_test.iml" filepath="$PROJECT_DIR$/.idea/modules/sapsync_test.iml" group="sapsync" />
+    </modules>
+  </component>
+</project>

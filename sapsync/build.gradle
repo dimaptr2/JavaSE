@@ -1,0 +1,52 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        flatDir {
+            dirs '/usr/sap/velkomfood.ru'
+        }
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+
+allprojects {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+}
+
+// Repositories definition
+repositories {
+    mavenCentral()
+    flatDir {
+        dirs '/usr/sap/velkomfood.ru'
+    }
+}
+
+// Dependencies definitions
+dependencies {
+
+    // SAP Java Connector
+    compile("sapjco3:sapjco3:3.0")
+    // MySQL connector
+    compile("mysql-connector-java-5.1.40:mysql-connector-java-5.1.40:5.1.40")
+    // NEO4J graph database driver
+//    compile("neo4j-java-driver-1.1.0:neo4j-java-driver-1.1.0:1.1.0")
+    // NEO4J JDBC driver
+    compile("neo4j-jdbc-3.0.1:neo4j-jdbc-3.0.1:3.0.1")
+
+}
+
+jar {
+    baseName = 'sapsync'
+    version = 1.1
+    manifest {
+        attributes(
+                'Implementation-Title': 'SAP synchronizer',
+                'Implementation-Version': version,
+                'Class-Path': configurations.compile.collect { '/usr/sap/velkomfood.ru/' + it.getName() }.join(' '),
+                'Main-Class': 'ru.velkomfood.mysap.synchronizer.Launcher'
+
+        )
+    }
+}
