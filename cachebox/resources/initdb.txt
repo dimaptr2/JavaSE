@@ -1,0 +1,4 @@
+CREATE TABLE IF NOT EXISTS materials (id INTEGER PRIMARY KEY, description VARCHAR(50))
+CREATE TABLE IF NOT EXISTS cash_journal (id INTEGER PRIMARY AUTOINCREMENT, cajo_number VARCHAR(4), company_code VARCHAR(4), year INTEGER, posting_number INTEGER, amount_receipt DECIMAL(20,2), amount_payments DECIMAL(20,2), net_amount DECIMAL(20,2), partner_name VARCHAR(35), doc_date DATE, post_date DATE, doc_number VARCHAR(30), pos_text VARCHAR(50), delivery_id INTEGER)
+CREATE TABLE IF NOT EXISTS delivery_head (vbeln INTEGER PRIMARY KEY, user VARCHAR(12), delivery_date DATE, customer VARCHAR(10))
+CREATE TABLE IF NOT EXISTS delivery_item (vbeln INTEGER NOT NULL, posnr INTEGER NOT NULL, matnr INTEGER, quantity DECIMAL(20,3), uom VARCHAR(3), PRIMARY KEY (vbeln, posnr))

@@ -2,16 +2,32 @@ package ru.velkomfood.fin.cache;
 
 import com.sap.conn.jco.JCoException;
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import ru.velkomfood.fin.cache.controller.DbManager;
 import ru.velkomfood.fin.cache.controller.SapSniffer;
 
+import java.awt.*;
+import java.io.IOException;
 import java.sql.SQLException;
 
 public class Launcher extends Application {
 
     private SapSniffer sapSniffer;
     private DbManager dbManager;
+
+    // Widgets
+    private Stage window;
+    private FXMLLoader loader;
+    private BorderPane mainBorderPane;
+    private Scene scene;
+    private VBox vBoxLeft;
+    private HBox hBoxTop;
+    private Label labelHead;
 
     @Override
     public void init() {
@@ -25,7 +41,7 @@ public class Launcher extends Application {
 //            sapSniffer.getAllMaterials();
             dbManager.openDbConnection();
             dbManager.initLocalDatabase();
-            dbManager.setMaterials(sapSniffer.getMaterials());
+//            dbManager.setMaterials(sapSniffer.getMaterials());
         } catch (JCoException | SQLException e) {
             e.printStackTrace();
         }
@@ -34,10 +50,9 @@ public class Launcher extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Stage window = primaryStage;
+        window = primaryStage;
         window.setTitle("Cash Journal");
-        sapSniffer.readCreditSlips("", "");
-        window.show();
+        showMainWindow();
     }
 
     @Override
@@ -52,5 +67,15 @@ public class Launcher extends Application {
     // Start point of the application
     public static void main(String[] args) {
         launch(args);
+    }
+
+    // PRIVATE SECTION
+    private void showMainWindow() throws IOException {
+        loader = new FXMLLoader();
+        loader.setLocation(this.getClass().getResource("start.fxml"));
+        mainBorderPane = loader.load();
+        scene = new Scene(mainBorderPane);
+        window.setScene(scene);
+        window.show();
     }
 }

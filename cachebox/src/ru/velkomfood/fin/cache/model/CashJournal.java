@@ -8,7 +8,6 @@ import java.sql.Date;
  */
 public class CashJournal {
 
-    private long id;
     private String cajoNumber;
     private String companyCode;
     private int year;
@@ -22,14 +21,6 @@ public class CashJournal {
     private String documentNumber;
     private String positionText;
     private long deliveryId;
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public String getCajoNumber() {
         return cajoNumber;

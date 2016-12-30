@@ -1,5 +1,9 @@
 package ru.velkomfood.fin.cache.controller;
 
+import ru.velkomfood.fin.cache.model.CashJournal;
+import ru.velkomfood.fin.cache.model.DeliveryHead;
+import ru.velkomfood.fin.cache.model.DeliveryItem;
+
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -16,6 +20,9 @@ public class DbManager {
     private Connection localConnection;
 
     private Map<Integer, String> materials;
+    private List<CashJournal> journalList;
+    private List<DeliveryHead> heads;
+    private List<DeliveryItem> items;
 
     private DbManager() { }
 
@@ -36,7 +43,7 @@ public class DbManager {
 
         String[] temp = fmt.format(now).split("-");
         localConnection = DriverManager.getConnection("jdbc:sqlite:db/cj-" + temp[0]
-                + "-" + temp[1] + ".db");
+                + ".db");
 //      connection = myds.getConnection();
   }
 
@@ -71,6 +78,18 @@ public class DbManager {
     // setters
     public void setMaterials(Map<Integer, String> materials) {
         this.materials = materials;
+    }
+
+    public void setJournalList(List<CashJournal> journalList) {
+        this.journalList = journalList;
+    }
+
+    public void setHeads(List<DeliveryHead> heads) {
+        this.heads = heads;
+    }
+
+    public void setItems(List<DeliveryItem> items) {
+        this.items = items;
     }
 
     // Upload master data
@@ -120,7 +139,7 @@ public class DbManager {
         sb.delete(0, sb.length());
 
         sb.append("CREATE TABLE IF NOT EXISTS cash_journal");
-        sb.append(" (id INTEGER PRIMARY KEY, cajo_number VARCHAR(4),");
+        sb.append(" (id INTEGER PRIMARY KEY AUTOINCREMENT, cajo_number VARCHAR(4),");
         sb.append(" company_code VARCHAR(4), year INTEGER, posting_number INTEGER,");
         sb.append(" amount_receipt DECIMAL(20,2), amount_payments DECIMAL(20,2),");
         sb.append(" net_amount DECIMAL(20,2), partner_name VARCHAR(35),");
@@ -137,7 +156,7 @@ public class DbManager {
 
         sb.append("CREATE TABLE IF NOT EXISTS delivery_item");
         sb.append(" (vbeln INTEGER NOT NULL, posnr INTEGER NOT NULL,");
-        sb.append(" matnr INTEGER, quantity DECIMAL(20,3), uom VARCHAR(3),");
+        sb.append(" matnr INTEGER, quantity DECIMAL(20,3), uom VARCHAR(3), mat_text VARCHAR(40),");
         sb.append(" PRIMARY KEY (vbeln, posnr))");
         commands[3] = sb.toString();
         sb.delete(0, sb.length());
