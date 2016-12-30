@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Class-Path: lib/jna-4.2.2.jar lib/mysqlconn.jar lib/sapjco3.jar lib/sqlite-jdbc-3.15.1.jar
+Created-By: velkomfood.ru
+JavaFX-Version: 8.0
+Main-Class: ru.velkomfood.fin.cache.Launcher
