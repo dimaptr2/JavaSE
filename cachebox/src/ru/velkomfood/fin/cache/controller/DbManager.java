@@ -26,15 +26,7 @@ public class DbManager {
         return instance;
     }
 
-  public void createDataSource() {
-//      MysqlDataSource ds = new MysqlDataSource();
-//      ds.setServerName("srv-sapapp.eatmeat.ru");
-//      ds.setPort(3306);
-//      ds.setDatabaseName("cache");
-//      ds.setUser("paymaster");
-//      ds.setPassword("12345678");
-//      this.myds = ds;
-  }
+  public void createDataSource() {  }
 
   // Opening and closing connections to databases (global and local)
   public void openDbConnection() throws SQLException {
