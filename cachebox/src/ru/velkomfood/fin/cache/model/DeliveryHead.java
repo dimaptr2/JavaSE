@@ -7,16 +7,16 @@ import java.sql.Date;
  */
 public class DeliveryHead {
 
-    private int id;
+    private Long id;
     private String user;
     private java.sql.Date deliveryDate;
     private String customer;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -2,17 +2,14 @@ package ru.velkomfood.fin.cache.controller;
 
 import com.sap.conn.jco.*;
 import com.sap.conn.jco.ext.DestinationDataProvider;
-import ru.velkomfood.fin.cache.model.CashJournal;
-import ru.velkomfood.fin.cache.model.DeliveryHead;
-import ru.velkomfood.fin.cache.model.DeliveryItem;
-import ru.velkomfood.fin.cache.model.RangeDates;
+import ru.velkomfood.fin.cache.model.*;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Date;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by dpetrov on 28.12.2016.
@@ -42,23 +39,16 @@ public class SapSniffer {
     private final String MATNR_HIGH = "000000000000079999";
 
     // Data collections
-    private Map<Integer, String> materials;
-    private List<CashJournal> journalList;
-    private List<DeliveryHead> heads;
-    private List<DeliveryItem> items;
+    CacheEngine cache = CacheEngine.getInstance();
 
     private SapSniffer() {
-        materials = new ConcurrentHashMap<>();
-        journalList = new ArrayList<>();
-        heads = new ArrayList<>();
-        items = new ArrayList<>();
         connectSap = new Properties();
-        connectSap.setProperty(DestinationDataProvider.JCO_ASHOST, "XXXXXXX");
+        connectSap.setProperty(DestinationDataProvider.JCO_ASHOST, "XXXX");
         connectSap.setProperty(DestinationDataProvider.JCO_SYSNR, "XX");
         connectSap.setProperty(DestinationDataProvider.JCO_R3NAME, "XXX");
         connectSap.setProperty(DestinationDataProvider.JCO_CLIENT, "XXX");
-        connectSap.setProperty(DestinationDataProvider.JCO_USER, "XXXXXX");
-        connectSap.setProperty(DestinationDataProvider.JCO_PASSWD, "XXXXXX");
+        connectSap.setProperty(DestinationDataProvider.JCO_USER, "XXXXXXXXX");
+        connectSap.setProperty(DestinationDataProvider.JCO_PASSWD, "XXXXXXXX");
         connectSap.setProperty(DestinationDataProvider.JCO_LANG, "XX");
         createDestinationDataFile(DEST_NAME, SUFFIX, connectSap);
     }
@@ -89,35 +79,72 @@ public class SapSniffer {
     }
 
     // read a dictionary of materials master data
-    public void getAllMaterials() throws JCoException {
+    public void getMaterialInfo() throws JCoException {
 
-        if (!materials.isEmpty()) {
-            materials.clear();
+        // BAPI_MATERIAL_GETLIST for retrieving list of materials
+        // BAPI_MATERIAL_GET_DETAIL for retrieving of details
+
+        if (!cache.getMaterials().isEmpty()) {
+            cache.getMaterials().clear();
         }
 
-        JCoFunction bapiMatList = jCoDestination.getRepository().
-                getFunction("BAPI_MATERIAL_GETLIST");
+        JCoFunction bapiMatList = jCoDestination.getRepository().getFunction("BAPI_MATERIAL_GETLIST");
         if (bapiMatList == null) {
             throw new RuntimeException("Function BAPI_MATERIAL_GETLIST not found");
         }
 
-        JCoTable matSelection = bapiMatList.getTableParameterList().getTable("MATNRSELECTION");
-        // Set table parameters
-        matSelection.appendRow();
-        matSelection.setValue("SIGN", "I"); // include
-        matSelection.setValue("OPTION", "BT"); // between
-        matSelection.setValue("MATNR_LOW", MATNR_LOW); // from number
-        matSelection.setValue("MATNR_HIGH", MATNR_HIGH); // to number
-        // execute BAPI function in SAP
-        bapiMatList.execute(jCoDestination);
-
-        JCoTable matList = bapiMatList.getTableParameterList().getTable("MATNRLIST");
-        if (matList.getNumRows() > 0) {
-            do {
-                materials.put(matList.getInt("MATERIAL"), matList.getString("MATL_DESC"));
-            } while (matList.nextRow());
+        JCoFunction bapiMatDetails = jCoDestination.getRepository().getFunction("BAPI_MATERIAL_GET_DETAIL");
+        if (bapiMatDetails == null) {
+            throw new RuntimeException("Function BAPI_MATERIAL_GET_DETAIL not found");
         }
-    }
+
+        // Execute RFC functions in the multiple context
+        try {
+
+            JCoContext.begin(jCoDestination);
+
+            JCoTable matSelection = bapiMatList.getTableParameterList().getTable("MATNRSELECTION");
+            // Set table parameters
+            matSelection.appendRow();
+            matSelection.setValue("SIGN", "I"); // include
+            matSelection.setValue("OPTION", "BT"); // between
+            matSelection.setValue("MATNR_LOW", MATNR_LOW); // from number
+            matSelection.setValue("MATNR_HIGH", MATNR_HIGH); // to number
+            // execute BAPI function in SAP
+            bapiMatList.execute(jCoDestination);
+
+            JCoTable matList = bapiMatList.getTableParameterList().getTable("MATNRLIST");
+            if (matList.getNumRows() > 0) {
+                do {
+                    Material mat = new Material();
+                    mat.setId(matList.getLong("MATERIAL"));
+                    mat.setDescription(matList.getString("MATL_DESC"));
+                    bapiMatDetails.getImportParameterList()
+                            .setValue("MATERIAL", matList.getString("MATERIAL"));
+                    bapiMatDetails.execute(jCoDestination);
+                    JCoStructure matGeneralData = bapiMatDetails.getExportParameterList()
+                            .getStructure("MATERIAL_GENERAL_DATA");
+                    for (JCoField f: matGeneralData) {
+                        switch (f.getName()) {
+                            case "BASE_UOM":
+                                mat.setBaseUom(f.getString());
+                                break;
+                            case "NET_WEIGHT":
+                                mat.setNetBaseWeight(f.getBigDecimal());
+                                break;
+                        }
+                    }
+                    cache.getMaterials().put(mat.getId(), mat);
+                } while (matList.nextRow());
+            }
+
+        } finally {
+
+            JCoContext.end(jCoDestination);
+
+        }
+
+    } // get data about materials
 
     // Read credit slips
     public void readCreditSlips(String fromDate, String toDate) throws JCoException {
@@ -129,17 +156,22 @@ public class SapSniffer {
         rfcCashJournal.getImportParameterList().setValue("I_CAJO_NUMBER", "1000");
 
         if (!fromDate.equals("") && !toDate.equals("")) {
-            RangeDates rd = new RangeDates(fromDate, toDate);
-            rfcCashJournal.getImportParameterList().setValue("FROM_DATE", rd.getFromDate());
-            rfcCashJournal.getImportParameterList().setValue("TO_DATE", rd.getToDate());
+            cache.getDates().setFromDate(fromDate);
+            cache.getDates().setToDate(toDate);
         } else {
             Date now = new Date();
             SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
             String[] strDates = fmt.format(now).split("-");
             String s1 = strDates[0] + strDates[1] + strDates[2];
-            rfcCashJournal.getImportParameterList().setValue("FROM_DATE", s1);
-            rfcCashJournal.getImportParameterList().setValue("TO_DATE", s1);
+            cache.getDates().setFromDate(s1);
+            cache.getDates().setToDate(s1);
         }
+
+        rfcCashJournal.getImportParameterList()
+                .setValue("FROM_DATE", cache.getDates().getFromDate());
+        rfcCashJournal.getImportParameterList()
+                .setValue("TO_DATE", cache.getDates().getToDate());
+
         // execute the RFC function
         rfcCashJournal.execute(jCoDestination);
         // Read a cash journal (We are reading only credit slips with outgoing deliveries)
@@ -160,27 +192,16 @@ public class SapSniffer {
     }
 
     // setters and getters
-    public Map<Integer, String> getMaterials() {
-        return materials;
-    }
 
-    public List<CashJournal> getJournalList() {
-        return journalList;
-    }
 
-    public List<DeliveryHead> getHeads() {
-        return heads;
-    }
+    // Return the receipt for the printing
+    // Before the calling this method we must invoke next methods:
+    // readCreditSlips, buildReceipt and calculateReceiptSums.
 
-    public List<DeliveryItem> getItems() {
-        return items;
-    }
-
-    // PRIVATE SECTION FOR METHODS
     private void readCashJournalData(JCoTable itab) throws JCoException {
 
-        if (!journalList.isEmpty()) {
-            journalList.clear();
+        if (!cache.getJournalList().isEmpty()) {
+            cache.getJournalList().clear();
         }
         // we will get only outgoing deliveries
         do {
@@ -198,7 +219,7 @@ public class SapSniffer {
                     cj.setCajoNumber(itab.getString("CAJO_NUMBER"));
                     cj.setCompanyCode(itab.getString("COMP_CODE"));
                     cj.setYear(itab.getInt("FISC_YEAR"));
-                    cj.setPostingNumber(itab.getInt("POSTING_NUMBER"));
+                    cj.setPostingNumber(itab.getLong("POSTING_NUMBER"));
                     cj.setAmountReceipt(itab.getBigDecimal("H_RECEIPTS"));
                     cj.setAmountPayments(itab.getBigDecimal("H_PAYMENTS"));
                     cj.setNetAmount(itab.getBigDecimal("H_NET_AMOUNT"));
@@ -206,7 +227,7 @@ public class SapSniffer {
                     cj.setDocumentDate(java.sql.Date.valueOf(itab.getString("DOCUMENT_DATE")));
                     cj.setPostingDate(java.sql.Date.valueOf(itab.getString("POSTING_DATE")));
                     cj.setDocumentNumber(itab.getString("DOCUMENT_NUMBER"));
-                    journalList.add(cj);
+                    cache.getJournalList().add(cj);
                 }
             }
         } while (itab.nextRow());
@@ -215,17 +236,17 @@ public class SapSniffer {
     // heads of deliveries
     private void readDeliveryHeads(JCoTable itab) throws JCoException {
 
-        if (!heads.isEmpty()) {
-            heads.clear();
+        if (!cache.getHeads().isEmpty()) {
+            cache.getHeads().clear();
         }
 
         do {
             DeliveryHead head = new DeliveryHead();
-            head.setId(itab.getInt("VBELN"));
+            head.setId(itab.getLong("VBELN"));
             head.setUser(itab.getString("ERNAM"));
             head.setDeliveryDate(java.sql.Date.valueOf(itab.getString("WADAT")));
             head.setCustomer(itab.getString("KUNNR"));
-            heads.add(head);
+            cache.getHeads().add(head);
         } while (itab.nextRow());
 
     }
@@ -233,20 +254,35 @@ public class SapSniffer {
     // items of deliveries
     private void readDeliveryItems(JCoTable itab) throws JCoException {
 
-        if (!items.isEmpty()) {
-            items.clear();
+        JCoFunction rfcUnitConversion = jCoDestination.getRepository()
+                .getFunction("Z_RFC_MATERIAL_UNIT_CONV");
+        if (rfcUnitConversion == null) {
+            throw new RuntimeException("Cannot found function Z_RFC_MATERIAL_UNIT_CONV");
+        }
+
+        if (!cache.getItems().isEmpty()) {
+            cache.getItems().clear();
         }
 
         do {
             DeliveryItem item = new DeliveryItem();
-            item.setDeliveryId(itab.getInt("VBELN"));
-            item.setPosId(itab.getInt("POSNR"));
-            item.setMaterialId(itab.getInt("MATNR"));
-            item.setQuantity(itab.getBigDecimal("LFIMG"));
-            item.setUom(itab.getString("MEINS"));
+            item.setDeliveryId(itab.getLong("VBELN"));
+            item.setPosId(itab.getLong("POSNR"));
+            item.setMaterialId(itab.getLong("MATNR"));
             item.setMaterialName(itab.getString("ARKTX"));
-            items.add(item);
+            item.setUom(itab.getString("MEINS"));
+            item.setQuantity(itab.getBigDecimal("LFIMG"));
+            // Invoke RFC function Z_RFC_MATERIAL_UNIT_CONV
+            rfcUnitConversion.getImportParameterList().setValue("I_MATNR", item.getMaterialId());
+            rfcUnitConversion.getImportParameterList().setValue("I_MEINH", item.getUom());
+            rfcUnitConversion.getImportParameterList().setValue("I_MENGE", item.getQuantity());
+            rfcUnitConversion.execute(jCoDestination);
+            // Quantity UOM into KG
+            BigDecimal quantity = rfcUnitConversion.getExportParameterList().getBigDecimal("E_MENGE");
+            item.setQuantityKG(quantity);
+            cache.getItems().add(item);
         } while (itab.nextRow());
 
     }
+
 }

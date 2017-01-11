@@ -3,15 +3,16 @@ package ru.velkomfood.fin.cache.model;
 import java.math.BigDecimal;
 
 /**
- * Created by dpetrov on 30.12.2016.
+ * Created by dpetrov on 09.01.2017.
  */
-public class DeliveryItem {
+public class ReceiptItem {
 
     private Long deliveryId;
     private Long posId;
     private Long materialId;
     private String materialName;
     private String uom;
+    private BigDecimal amount;
     private BigDecimal quantity;
     private BigDecimal quantityKG;
 
@@ -53,6 +54,14 @@ public class DeliveryItem {
 
     public void setUom(String uom) {
         this.uom = uom;
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
     }
 
     public BigDecimal getQuantity() {
