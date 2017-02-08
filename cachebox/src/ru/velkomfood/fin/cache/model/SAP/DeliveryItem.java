@@ -1,4 +1,4 @@
-package ru.velkomfood.fin.cache.model;
+package ru.velkomfood.fin.cache.model.SAP;
 
 import java.math.BigDecimal;
 

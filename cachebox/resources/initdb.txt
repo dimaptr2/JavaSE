@@ -13,3 +13,6 @@ pos_text VARCHAR(50), delivery_id INTEGER, timestamp DATETIME NOT NULL);
 CREATE TABLE IF NOT EXISTS cj_items (cj_id INTEGER NOT NULL, delivery_id INTEGER NOT NULL, posnr INTEGER NOT NULL,
 matnr INTEGER, mat_text VARCHAR(40), uom VARCHAR(3),  quantity DECIMAL(20,3), quantity_kg DECIMAL(20,3),
 PRIMARY KEY (cj_id, delivery_id, posnr));
+
+CREATE TABLE IF NOT EXISTS cs_status (cj_id INTEGER PRIMARY KEY, status_id VARCHAR(5) NOT NULL,
+FOREIGN KEY (cj_id) REFERENCES cash_journal(id));

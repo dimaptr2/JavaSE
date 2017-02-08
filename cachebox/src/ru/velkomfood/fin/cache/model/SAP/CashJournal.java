@@ -1,33 +1,26 @@
-package ru.velkomfood.fin.cache.model;
+package ru.velkomfood.fin.cache.model.SAP;
 
 import java.math.BigDecimal;
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
- * Created by dpetrov on 09.01.2017.
+ * Created by dpetrov on 29.12.2016.
  */
-public class Receipt {
+public class CashJournal {
 
     private String cajoNumber;
     private String companyCode;
     private int year;
     private Long postingNumber;
     private BigDecimal amountReceipt;
+    private BigDecimal amountPayments;
+    private BigDecimal netAmount;
     private String partnerName;
     private java.sql.Date documentDate;
     private java.sql.Date postingDate;
     private String documentNumber;
     private String positionText;
     private Long deliveryId;
-    private List<ReceiptItem> items;
-
-    public Receipt() {
-        items = new ArrayList<>();
-    }
-
-    // setters and getters
 
     public String getCajoNumber() {
         return cajoNumber;
@@ -67,6 +60,22 @@ public class Receipt {
 
     public void setAmountReceipt(BigDecimal amountReceipt) {
         this.amountReceipt = amountReceipt;
+    }
+
+    public BigDecimal getAmountPayments() {
+        return amountPayments;
+    }
+
+    public void setAmountPayments(BigDecimal amountPayments) {
+        this.amountPayments = amountPayments;
+    }
+
+    public BigDecimal getNetAmount() {
+        return netAmount;
+    }
+
+    public void setNetAmount(BigDecimal netAmount) {
+        this.netAmount = netAmount;
     }
 
     public String getPartnerName() {
@@ -117,33 +126,4 @@ public class Receipt {
         this.deliveryId = deliveryId;
     }
 
-    public List<ReceiptItem> getItems() {
-        return items;
-    }
-
-    public void setItems(List<ReceiptItem> items) {
-        this.items = items;
-    }
-
-
-    // Item's functions
-
-    public void addItem(ReceiptItem item) {
-        items.add(item);
-    }
-
-    public void deleteItemByIndex(int index) {
-        items.remove(index);
-    }
-
-    public void deleteItem(ReceiptItem item) {
-        int index = items.indexOf(item);
-        items.remove(index);
-    }
-
-    public void clearItems() {
-        if (items != null && !items.isEmpty()) {
-            items.clear();
-        }
-    }
 }

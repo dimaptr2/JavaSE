@@ -1,13 +1,14 @@
-package ru.velkomfood.fin.cache.model;
+package ru.velkomfood.fin.cache.model.DB;
 
 import java.math.BigDecimal;
 import java.sql.Date;
 
 /**
- * Created by dpetrov on 29.12.2016.
+ * Created by dpetrov on 12.01.2017.
  */
-public class CashJournal {
+public class CreditSlip {
 
+    private Long id;
     private String cajoNumber;
     private String companyCode;
     private int year;
@@ -22,6 +23,14 @@ public class CashJournal {
     private String positionText;
     private Long deliveryId;
     private java.sql.Date timestamp;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getCajoNumber() {
         return cajoNumber;

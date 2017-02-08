@@ -1,4 +1,4 @@
-package ru.velkomfood.fin.cache.model;
+package ru.velkomfood.fin.cache.model.SAP;
 
 /**
  * Created by dpetrov on 29.12.2016.

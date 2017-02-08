@@ -1,7 +1,7 @@
 package ru.velkomfood.fin.cache.controller;
 
-import ru.velkomfood.fin.cache.model.CashJournal;
-import ru.velkomfood.fin.cache.model.Material;
+import ru.velkomfood.fin.cache.model.SAP.CashJournal;
+import ru.velkomfood.fin.cache.model.SAP.Material;
 
 import java.sql.*;
 import java.text.SimpleDateFormat;
@@ -47,7 +47,7 @@ public class DbManager {
       SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
 
       String[] temp = fmt.format(now).split("-");
-      databaseUrl = "jdbc:sqlite:db/cj-" + temp[0] + ".db";
+      databaseUrl = "jdbc:sqlite:DB/cj-" + temp[0] + ".db";
       localConnection = DriverManager.getConnection(databaseUrl);
 //      connection = myds.getConnection();
   }
@@ -185,7 +185,7 @@ public class DbManager {
 
     private String[] buildInitSql() {
 
-        String[] commands = new String[3];
+        String[] commands = new String[4];
         StringBuilder sb = new StringBuilder(0);
 
         sb.append("CREATE TABLE IF NOT EXISTS materials").
@@ -210,6 +210,12 @@ public class DbManager {
         sb.append(" uom VARCHAR(3),  quantity DECIMAL(20,3), quantity_kg DECIMAL(20,3),");
         sb.append(" PRIMARY KEY (cj_id, delivery_id, posnr))");
         commands[2] = sb.toString();
+        sb.delete(0, sb.length());
+
+        sb.append("CREATE TABLE IF NOT EXISTS cs_status");
+        sb.append(" (cj_id INTEGER PRIMARY KEY, status_id VARCHAR(8) NOT NULL,");
+        sb.append(" FOREIGN KEY (cj_id) REFERENCES cash_journal(id))");
+        commands[3] = sb.toString();
         sb.delete(0, sb.length());
 
         return commands;

@@ -2,7 +2,10 @@ package ru.velkomfood.fin.cache.controller;
 
 import com.sap.conn.jco.*;
 import com.sap.conn.jco.ext.DestinationDataProvider;
-import ru.velkomfood.fin.cache.model.*;
+import ru.velkomfood.fin.cache.model.SAP.CashJournal;
+import ru.velkomfood.fin.cache.model.SAP.DeliveryHead;
+import ru.velkomfood.fin.cache.model.SAP.DeliveryItem;
+import ru.velkomfood.fin.cache.model.SAP.Material;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -43,13 +46,13 @@ public class SapSniffer {
 
     private SapSniffer() {
         connectSap = new Properties();
-        connectSap.setProperty(DestinationDataProvider.JCO_ASHOST, "XXXX");
-        connectSap.setProperty(DestinationDataProvider.JCO_SYSNR, "XX");
-        connectSap.setProperty(DestinationDataProvider.JCO_R3NAME, "XXX");
-        connectSap.setProperty(DestinationDataProvider.JCO_CLIENT, "XXX");
-        connectSap.setProperty(DestinationDataProvider.JCO_USER, "XXXXXXXXX");
-        connectSap.setProperty(DestinationDataProvider.JCO_PASSWD, "XXXXXXXX");
-        connectSap.setProperty(DestinationDataProvider.JCO_LANG, "XX");
+        connectSap.setProperty(DestinationDataProvider.JCO_ASHOST, "rups15.eatmeat.ru");
+        connectSap.setProperty(DestinationDataProvider.JCO_SYSNR, "02");
+        connectSap.setProperty(DestinationDataProvider.JCO_R3NAME, "PRD");
+        connectSap.setProperty(DestinationDataProvider.JCO_CLIENT, "500");
+        connectSap.setProperty(DestinationDataProvider.JCO_USER, "BGD_ADMIN");
+        connectSap.setProperty(DestinationDataProvider.JCO_PASSWD, "123qweASD");
+        connectSap.setProperty(DestinationDataProvider.JCO_LANG, "RU");
         createDestinationDataFile(DEST_NAME, SUFFIX, connectSap);
     }
 
@@ -76,6 +79,12 @@ public class SapSniffer {
     // SAP connection initialization
     public void initSAPConnection() throws JCoException {
         jCoDestination = JCoDestinationManager.getDestination(DEST_NAME);
+    }
+
+    // Setters and getters
+
+    public JCoDestination getjCoDestination() {
+        return jCoDestination;
     }
 
     // read a dictionary of materials master data
@@ -115,6 +124,7 @@ public class SapSniffer {
 
             JCoTable matList = bapiMatList.getTableParameterList().getTable("MATNRLIST");
             if (matList.getNumRows() > 0) {
+
                 do {
                     Material mat = new Material();
                     mat.setId(matList.getLong("MATERIAL"));
@@ -190,9 +200,6 @@ public class SapSniffer {
             }
         }
     }
-
-    // setters and getters
-
 
     // Return the receipt for the printing
     // Before the calling this method we must invoke next methods:
