@@ -34,13 +34,13 @@ public class SapSniffer {
 
     private SapSniffer() {
         connectSap = new Properties();
-        connectSap.setProperty(DestinationDataProvider.JCO_ASHOST, "rups15.eatmeat.ru");
-        connectSap.setProperty(DestinationDataProvider.JCO_SYSNR, "02");
-        connectSap.setProperty(DestinationDataProvider.JCO_R3NAME, "PRD");
-        connectSap.setProperty(DestinationDataProvider.JCO_CLIENT, "500");
-        connectSap.setProperty(DestinationDataProvider.JCO_USER, "BGD_ADMIN");
-        connectSap.setProperty(DestinationDataProvider.JCO_PASSWD, "123qweASD");
-        connectSap.setProperty(DestinationDataProvider.JCO_LANG, "RU");
+        connectSap.setProperty(DestinationDataProvider.JCO_ASHOST, "XXX");
+        connectSap.setProperty(DestinationDataProvider.JCO_SYSNR, "XX");
+        connectSap.setProperty(DestinationDataProvider.JCO_R3NAME, "XXX");
+        connectSap.setProperty(DestinationDataProvider.JCO_CLIENT, "XXX");
+        connectSap.setProperty(DestinationDataProvider.JCO_USER, "XXXX");
+        connectSap.setProperty(DestinationDataProvider.JCO_PASSWD, "XXXXX");
+        connectSap.setProperty(DestinationDataProvider.JCO_LANG, "XX");
         createDestinationDataFile(DEST_NAME, SUFFIX, connectSap);
     }
 
