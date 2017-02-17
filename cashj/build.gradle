@@ -1,0 +1,71 @@
+buildscript {
+	repositories {
+		flatDir {
+			dirs 'lib'
+		}
+	}
+}
+
+allprojects {
+	apply plugin: 'java'
+	apply plugin: 'idea'
+	sourceCompatibility = 1.8
+	targetCompatibility = 1.8
+}
+
+repositories {
+		flatDir {
+			dirs 'lib'
+		}
+}
+
+dependencies {
+
+	// MySQL connector
+    compile("mysql-connector-java-5.1.40:mysql-connector-java-5.1.40:5.1.40")
+
+	// SAP Java Connector
+	compile("sapjco3:sapjco3:3.0")
+
+	// General API
+	compile("javax.annotation-api-1.3:javax.annotation-api-1.3:1.3")
+	compile("javax.servlet-api-3.1.0:javax.servlet-api-3.1.0:3.1.0")
+	compile("validation-api-1.1.0.Final:validation-api-1.1.0.Final:1.1.0.Final")
+
+	// Jetty Server and his libraries
+	compile("jetty-annotations-9.4.0.v20161208:jetty-annotations-9.4.0.v20161208:9.4.0.v20161208")
+	compile("jetty-continuation-9.4.0.v20161208:jetty-continuation-9.4.0.v20161208:9.4.0.v20161208")
+	compile("jetty-http-9.4.0.v20161208:jetty-http-9.4.0.v20161208:9.4.0.v20161208")
+	compile("jetty-io-9.4.0.v20161208:jetty-io-9.4.0.v20161208:9.4.0.v20161208")
+	compile("jetty-plus-9.4.0.v20161208:jetty-plus-9.4.0.v20161208:9.4.0.v20161208")
+	compile("jetty-security-9.4.0.v20161208:jetty-security-9.4.0.v20161208:9.4.0.v20161208")
+	compile("jetty-server-9.4.0.v20161208:jetty-server-9.4.0.v20161208:9.4.0.v20161208")
+	compile("jetty-servlet-9.4.0.v20161208:jetty-servlet-9.4.0.v20161208:9.4.0.v20161208")
+	compile("jetty-webapp-9.4.0.v20161208:jetty-webapp-9.4.0.v20161208:9.4.0.v20161208")
+	compile("jetty-util-9.4.0.v20161208:jetty-util-9.4.0.v20161208:9.4.0.v20161208")
+	compile("jetty-xml-9.4.0.v20161208:jetty-xml-9.4.0.v20161208:9.4.0.v20161208")
+
+	// Freemarker
+	compile("freemarker-2.3.23:freemarker-2.3.23:2.3.23")
+
+	// GSON API (Google JSON converter)
+	compile("gson-2.8.0:gson-2.8.0:2.8.0")
+
+}
+
+jar {
+	
+	baseName = 'cashj'
+    version = 1.1
+    
+    manifest {
+        attributes(
+                'Implementation-Title': 'Cash Journal',
+                'Implementation-Version': version,
+                'Class-Path': configurations.compile.collect { 'lib/' + it.getName() }.join(' '),
+                'Main-Class': 'ru.velkomfood.fin.cash.Launcher'
+
+        )
+    }
+	
+}

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/w3.css">
+    <script src="js/w3.js"></script>
+    <script src="js/cashj.js"></script>
+    <title>Cash Journal</title>
+    <style>
+        #first-label {width: 200px;}
+        #from-date {width: 200px;}
+        #mode {width: 200px;}
+        .w3-btn {width: 200px;}
+    </style>
+</head>
+<body>
+<div id="main-header" class="w3-container w3-margin w3-center">
+    <header>
+        <h2 class="w3-text-teal">Кассовая книга</h2>
+    </header>
+</div>
+<div id="center-panel" c>
+    <div id="main-form" class="w3-container w3-margin w3-center w3-border">
+        <form id="form-panel" class="w3-container w3-margin" action="/cj" method="post">
+            <label id="first-label" class="w3-center">Выбрать дату: </label>
+            <br>
+            <input id="from-date" name="from-date" type="date" class="w3-border">
+            <br>
+            <select id="mode" name="mode" class="w3-margin">
+                <option value="new">Приходные ордера</option>
+                <option value="released">Выданные чеки</option>
+            </select>
+            <br>
+            <button id="btn-search" name="btn-search"
+                    class="w3-btn w3-khaki w3-margin w3-medium">
+                Получить данные
+            </button>
+            <br>
+        </form>
+    </div>
+</div>
+<div id="main-footer" class="w3-container w3-margin w3-bottom">
+    <footer class="w3-center w3-margin w3-border">
+        <p><i>"ООО МК Павловская Слобода",  Московская область, Истринский р-н, с. Павловская Слобода, ул. Ленина, 75</i></p>
+    </footer>
+</div>
+</body>
+</html>
