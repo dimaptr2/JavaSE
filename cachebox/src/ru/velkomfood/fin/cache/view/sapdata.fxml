@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="191.0" prefWidth="338.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.velkomfood.fin.cache.view.UploadController">
+   <children>
+      <Label id="labelProcess" alignment="CENTER" layoutX="27.0" layoutY="39.0" prefHeight="17.0" prefWidth="297.0" text="Загрузка данных из SAP" textFill="#2765c4">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Button id="btnUpload" fx:id="btnUpload" layoutX="97.0" layoutY="121.0" mnemonicParsing="false" onAction="#uploadCreditSlips" prefHeight="25.0" prefWidth="145.0" text="Начать загрузку" />
+      <ProgressBar id="pb" fx:id="pb" layoutX="30.0" layoutY="78.0" prefHeight="27.0" prefWidth="278.0" progress="0.0" />
+   </children>
+</AnchorPane>
