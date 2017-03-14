@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module external.linked.project.id="cashj2:test" external.linked.project.path="$MODULE_DIR$/../.." external.root.project.path="$MODULE_DIR$/../.." external.system.id="GRADLE" external.system.module.group="ru.velkomfood.fin.cash" external.system.module.type="sourceSet" external.system.module.version="2.2" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8" inherit-compiler-output="false">
+    <output-test url="file://$MODULE_DIR$/../../build/classes/test" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/../../src/test">
+      <sourceFolder url="file://$MODULE_DIR$/../../src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../src/test/resources" type="java-test-resource" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="cashj2_main" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: jetty-all-9.4.2.v20170220-uber:jetty-all-9.4.2.v20170220-uber:9.4.2.v20170220" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: mysql:mysql-connector-java:5.1.41" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.sap:sapjco3:3.0" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.freemarker:freemarker:2.3.23" level="project" />
+  </component>
+  <component name="TestModuleProperties" production-module="cashj2_main" />
+</module>

@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Gradle: com.sap:sapjco3:3.0">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/sapjco3.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

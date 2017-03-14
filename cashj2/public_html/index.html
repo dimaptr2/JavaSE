@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html lang="ru">
+    <head>
+        <title>Cash Journal</title>
+        <link rel="stylesheet" href="pure/base.css">
+        <link rel="stylesheet" href="pure/pure.css">
+        <link rel="stylesheet" href="pure/forms.css">
+        <link rel="stylesheet" href="js/jquery-ui.css">
+        <link rel="stylesheet" href="js/jquery-ui.structure.css">
+        <link rel="stylesheet" href="js/jquery-ui.theme.css">
+        <link rel="stylesheet" href="webcss/main.css">
+        <script src="js/jquery.js"></script>
+        <script src="js/jquery-ui.js"></script>
+        <script src="js/cashj.js"></script>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div id="top-header">
+            <header id="head-001" class="center">
+                <h1 id="head-sign-001"><i>Кассовая книга "ООО МК Павловская Слобода"</i></h1>
+            </header>
+        </div>
+        <nav id="command-area" class="left-nav border-1px">
+          <form id="command-form" class="pure-form margin-10px">
+            <label class="margin-5px">Приходные ордера за: </label>
+            <br>
+            <input id="at-date" type="text" class="pure-input margin-5px size-form-elements">
+            <br>
+            <button id="btn-read" name="btn-read" value="READ"
+                 class="pure-button margin-5px size-form-elements">
+              Загрузить ПО
+            </button>
+            <br>
+            <button id="btn-history"  name="btn-history" value="HISTORY"
+                class="pure-button margin-5px size-form-elements">
+              Выданные чеки
+            </button>
+          </form>
+        </nav>
+        <div id="active-area" class="active-area">
+          <table id="data-table" class="pure-table margin-10px">
+            <thead>
+              <tr>
+                <td>№ п/п</td>
+                <td>Номер приходного ордера</td>
+                <td>Дата проводки</td>
+                <td>Номер поставки</td>
+                <td class="size-table-field-400">Описание</td>
+                <td>Статус</td>
+              </tr>
+            </thead>
+            <tbody id="data-area" class="tbody-scroll">
+            </tbody>
+          </table>
+        </div>
+        <div id="central-footer">
+          <footer id="footer-001" class="bottom-footer">
+            <p><i>143581, МО, Истринский р-н, с. Павловская Слобода, ул. Ленина, 75</i></p>
+          </footer>
+        </div>
+    </body>
+</html>

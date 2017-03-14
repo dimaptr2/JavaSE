@@ -1,0 +1,58 @@
+group 'ru.velkomfood.fin.cash'
+version '2.2'
+
+apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: 'idea'
+
+allprojects {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+}
+
+mainClassName = group + '.Launcher'
+
+repositories {
+    flatDir {
+        dirs 'lib'
+    }
+//    mavenCentral()
+}
+
+dependencies {
+    // Jetty full distribution
+    compile group: 'jetty-all-9.4.2.v20170220-uber', name: 'jetty-all-9.4.2.v20170220-uber', version: '9.4.2.v20170220'
+    // MySQL Java connector
+    compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.41'
+    // SAP Java Connector
+    compile group: 'com.sap', name: 'sapjco3', version: '3.0'
+    // Templates generator
+    compile group: 'org.freemarker', name: 'freemarker', version: '2.3.23'
+    // JUnit testing
+//    testCompile group: 'junit', name: 'junit', version: '4.11'
+}
+
+// Build an executable java archive
+jar {
+    baseName = 'cashj2'
+    manifest {
+        attributes(
+                'Implementation-Title': 'Cash Journal',
+                'Implementation-Version': version,
+                'Main-Class': mainClassName,
+                'Class-Path': configurations.compile.collect { 'lib/' + it.getName() }.join(' ')
+        )
+    }
+}
+
+// Copy an executable jar to the dist/ directory
+task copyJar(type: Copy) {
+    from 'build/libs/cashj2-2.2.jar'
+    into '/dist'
+}
+
+// Copy dependencies to the dist/lib directory
+task copyLibs(type: Copy) {
+    from 'lib/'
+    into '/dist/lib'
+}
