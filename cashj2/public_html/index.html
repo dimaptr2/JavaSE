@@ -26,43 +26,24 @@ and open the template in the editor.
                 <h1 id="head-sign-001"><i>Кассовая книга "ООО МК Павловская Слобода"</i></h1>
             </header>
         </div>
-        <nav id="command-area" class="left-nav border-1px">
-          <form id="command-form" class="pure-form margin-10px">
-            <label class="margin-5px">Приходные ордера за: </label>
-            <br>
-            <input id="at-date" type="text" class="pure-input margin-5px size-form-elements">
-            <br>
-            <button id="btn-read" name="btn-read" value="READ"
-                 class="pure-button margin-5px size-form-elements">
-              Загрузить ПО
-            </button>
-            <br>
-            <button id="btn-history"  name="btn-history" value="HISTORY"
-                class="pure-button margin-5px size-form-elements">
-              Выданные чеки
-            </button>
+        <nav id="command-area" class="nav-style border-1px">
+          <form id="command-form" method="post" action="/cj" class="pure-form margin-10px">
+              <center>
+              <fieldset>
+                  <label class="margin-5px">Приходные ордера за: </label>
+                  <br>
+                  <input id="atDate" name="atDate" type="text" class="pure-input margin-5px size-form-elements">
+                  <br>
+              </fieldset>
+                  <input id="btnOk" name="btnOk" type="submit" value="OK"
+                         class="pure-button margin-5px size-form-elements">
+              </center>
           </form>
         </nav>
-        <div id="active-area" class="active-area">
-          <table id="data-table" class="pure-table margin-10px">
-            <thead>
-              <tr>
-                <td>№ п/п</td>
-                <td>Номер приходного ордера</td>
-                <td>Дата проводки</td>
-                <td>Номер поставки</td>
-                <td class="size-table-field-400">Описание</td>
-                <td>Статус</td>
-              </tr>
-            </thead>
-            <tbody id="data-area" class="tbody-scroll">
-            </tbody>
-          </table>
-        </div>
         <div id="central-footer">
-          <footer id="footer-001" class="bottom-footer">
-            <p><i>143581, МО, Истринский р-н, с. Павловская Слобода, ул. Ленина, 75</i></p>
-          </footer>
+            <footer id="footer-001" class="bottom-footer">
+                <p><i>143581, МО, Истринский р-н, с. Павловская Слобода, ул. Ленина, 75</i></p>
+            </footer>
         </div>
     </body>
 </html>

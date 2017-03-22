@@ -17,14 +17,9 @@ public class Launcher {
 
         System.out.println("Start Cash Journal Service on the port 8083");
 
-//        DataSocketManager dataSocketManager = DataSocketManager.getInstance();
         StartUI frontend = new StartUI();
-
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.addServlet(new ServletHolder(frontend), "/cj");
-        // Socket Service to the context
-//        context.addServlet(new ServletHolder(dataSocketManager), "/wsdata");
-
         ResourceHandler resourceHandler = new ResourceHandler();
         resourceHandler.setResourceBase("public_html");
         resourceHandler.setRedirectWelcome(true);

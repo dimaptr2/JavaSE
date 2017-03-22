@@ -17,6 +17,13 @@ and open the template in the editor.
     /*text-shadow: 2px 3px darkcyan;*/
 }
 
+.central-table {
+    margin: auto;
+    width: 80%;
+    border: 1px solid lightgrey;
+    padding: 10px;
+}
+
 .left-nav {
     position: absolute;
     left: 0px;
@@ -24,6 +31,14 @@ and open the template in the editor.
     width: 20%;
     height: 82%;
     text-align: left;
+}
+
+.nav-style {
+     margin: auto;
+     padding: auto;
+     width: 60%;
+     height: 82%;
+     text-align: left;
 }
 
 .form-sign {
@@ -55,11 +70,10 @@ and open the template in the editor.
 
 /* Basic data visual area */
 .active-area {
-    position: absolute;
-    left: 360px;
-    margin: 5px;
-    width: 75%;
-    height: 82%;
+    margin: auto;
+    padding: 10px;
+    width: 70%;
+    height: 80%;
     text-align: left;
     border: 1px solid lightgrey;
 }

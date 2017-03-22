@@ -13,5 +13,7 @@
     <orderEntry type="library" scope="PROVIDED" name="Gradle: mysql:mysql-connector-java:5.1.41" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: com.sap:sapjco3:3.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: org.freemarker:freemarker:2.3.23" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.google.code.gson:gson:2.8.0" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: javax:javaee-web-api:7.0" level="project" />
   </component>
 </module>
