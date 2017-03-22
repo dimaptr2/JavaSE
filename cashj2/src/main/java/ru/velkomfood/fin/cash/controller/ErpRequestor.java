@@ -21,12 +21,12 @@ public class ErpRequestor {
 
     private ErpRequestor() {
         connectionProperties = new Properties();
-        connectionProperties.setProperty(DestinationDataProvider.JCO_ASHOST, "rups15.eatmeat.ru");
-        connectionProperties.setProperty(DestinationDataProvider.JCO_SYSNR, "02");
-        connectionProperties.setProperty(DestinationDataProvider.JCO_R3NAME, "PRD");
-        connectionProperties.setProperty(DestinationDataProvider.JCO_USER, "BGD_ADMIN");
-        connectionProperties.setProperty(DestinationDataProvider.JCO_PASSWD, "123qweASD");
-        connectionProperties.setProperty(DestinationDataProvider.JCO_LANG, "RU");
+        connectionProperties.setProperty(DestinationDataProvider.JCO_ASHOST, "");
+        connectionProperties.setProperty(DestinationDataProvider.JCO_SYSNR, "");
+        connectionProperties.setProperty(DestinationDataProvider.JCO_R3NAME, "");
+        connectionProperties.setProperty(DestinationDataProvider.JCO_USER, "");
+        connectionProperties.setProperty(DestinationDataProvider.JCO_PASSWD, "");
+        connectionProperties.setProperty(DestinationDataProvider.JCO_LANG, "");
         createDestinationDataFile(DEST_NAME, connectionProperties);
     }
 
