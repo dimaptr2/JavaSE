@@ -1,7 +1,9 @@
 package ru.velkomfood.fin.cash.view;
 
+import com.google.gson.Gson;
 import com.sap.conn.jco.JCoException;
 import ru.velkomfood.fin.cash.controller.ErpRequestor;
+import ru.velkomfood.fin.cash.model.HeadReceiptOrder;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,6 +23,7 @@ public class StartUI extends HttpServlet {
 
     private PageGenerator pageGenerator = PageGenerator.getInstance();
     private ErpRequestor erpRequestor = ErpRequestor.getInstance();
+    private List<HeadReceiptOrder> result;
 
     @Override
     public void doGet(HttpServletRequest request,
@@ -36,24 +40,45 @@ public class StartUI extends HttpServlet {
     public void doPost(HttpServletRequest request,
                        HttpServletResponse response) throws ServletException, IOException {
 
-        response.setContentType("text/html;charset=utf-8");
+//        response.setContentType("text/html;charset=utf-8");
+        response.setContentType("application/json;charset=utf-8");
+//        application/json
         String buttonCode = "";
         boolean hasError = false;
 
         Map<String, Object> pageVariables = createPageVariablesMap(request);
         String atDate = String.valueOf(pageVariables.get("atDate"));
-        String[] temp = atDate.split(".");
 
-        if (!pageVariables.get("btnOk").equals("")) {
-            buttonCode = String.valueOf(pageVariables.get("btnOk"));
+        // Get values from buttons
+        if (pageVariables.get("btnRead") != null) {
+            buttonCode = String.valueOf(pageVariables.get("btnRead"));
         }
 
-        if (!buttonCode.equals("")) {
-            try {
-                erpRequestor.initSAPconnection();
-            } catch (JCoException jex) {
-                jex.printStackTrace();
-            }
+        if (pageVariables.get("btnHistory") != null) {
+            buttonCode = String.valueOf(pageVariables.get("btnHistory"));
+        }
+
+        if (pageVariables.get("btnZ") != null) {
+            buttonCode = String.valueOf(pageVariables.get("btnZ"));
+        }
+
+        switch (buttonCode) {
+            case "READ":
+                try {
+                    erpRequestor.initSAPconnection();
+                    erpRequestor.getReceiptHeaders(atDate);
+                    result = erpRequestor.getHeads();
+                    if (result == null || result.isEmpty()) {
+                        hasError = true;
+                    }
+                } catch (JCoException jex) {
+                    jex.printStackTrace();
+                }
+                break;
+            case "HISTORY":
+                break;
+            case "ZREPORT":
+                break;
         }
 
         // Return the response status
@@ -63,19 +88,27 @@ public class StartUI extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_OK);
         }
 
+        Gson gson = new Gson();
+        String json = gson.toJson(result);
         // Create the response in the JSON format
-        response.getWriter().println(pageGenerator.getPage("print.html", pageVariables));
+        response.getWriter().println(json);
+        //        String pageName = "index.html";
+        // response in the HTML form
+//        response.getWriter().println(pageGenerator.getPage(pageName, pageVariables));
 
     } // end of doPost
 
-    private static Map<String, Object> createPageVariablesMap(HttpServletRequest request) {
+    private Map<String, Object> createPageVariablesMap(HttpServletRequest request) {
         Map<String, Object> pageVariables = new HashMap<>();
         String[] strDate = request.getParameter("atDate").split("-");
         pageVariables.put("year", strDate[2]);
         pageVariables.put("month", strDate[1]);
         pageVariables.put("day", strDate[0]);
         pageVariables.put("atDate", request.getParameter("atDate"));
-        pageVariables.put("btnOk", request.getParameter("btnOk"));
+        pageVariables.put("btnRead", request.getParameter("btnRead"));
+        pageVariables.put("btnHistory", request.getParameter("btnHistory"));
+        pageVariables.put("btnZ", request.getParameter("btnZ"));
+        pageVariables.put("result", result);
         return pageVariables;
     }
 

@@ -7,6 +7,7 @@ import java.math.BigDecimal;
  */
 public class HeadReceiptOrder {
 
+    private long counter;
     private String cajoNumber;
     private int companyCode;
     private int fiscalYear;
@@ -16,21 +17,12 @@ public class HeadReceiptOrder {
     private long deliveryId;
     private BigDecimal amount;
 
-    public HeadReceiptOrder() { }
+    public long getCounter() {
+        return counter;
+    }
 
-    public HeadReceiptOrder(String cajoNumber,
-                            int companyCode, int fiscalYear,
-                            long postingNumber, String postingDate,
-                            String positionText, long deliveryId,
-                            BigDecimal amount) {
-        this.cajoNumber = cajoNumber;
-        this.companyCode = companyCode;
-        this.fiscalYear = fiscalYear;
-        this.postingNumber = postingNumber;
-        this.postingDate = postingDate;
-        this.positionText = positionText;
-        this.deliveryId = deliveryId;
-        this.amount = amount;
+    public void setCounter(long counter) {
+        this.counter = counter;
     }
 
     public String getCajoNumber() {
