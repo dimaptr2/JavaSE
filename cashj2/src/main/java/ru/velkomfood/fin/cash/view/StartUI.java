@@ -3,7 +3,7 @@ package ru.velkomfood.fin.cash.view;
 import com.google.gson.Gson;
 import com.sap.conn.jco.JCoException;
 import ru.velkomfood.fin.cash.controller.ErpRequestor;
-import ru.velkomfood.fin.cash.model.HeadReceiptOrder;
+import ru.velkomfood.fin.cash.model.CashDoc;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,7 +23,7 @@ public class StartUI extends HttpServlet {
 
     private PageGenerator pageGenerator = PageGenerator.getInstance();
     private ErpRequestor erpRequestor = ErpRequestor.getInstance();
-    private List<HeadReceiptOrder> result;
+    private List<CashDoc> result;
 
     @Override
     public void doGet(HttpServletRequest request,
@@ -42,7 +42,6 @@ public class StartUI extends HttpServlet {
 
 //        response.setContentType("text/html;charset=utf-8");
         response.setContentType("application/json;charset=utf-8");
-//        application/json
         String buttonCode = "";
         boolean hasError = false;
 
@@ -52,6 +51,10 @@ public class StartUI extends HttpServlet {
         // Get values from buttons
         if (pageVariables.get("btnRead") != null) {
             buttonCode = String.valueOf(pageVariables.get("btnRead"));
+        }
+
+        if (pageVariables.get("btnPrint") != null) {
+            buttonCode = String.valueOf(pageVariables.get("btnPrint"));
         }
 
         if (pageVariables.get("btnHistory") != null) {
@@ -66,7 +69,7 @@ public class StartUI extends HttpServlet {
             case "READ":
                 try {
                     erpRequestor.initSAPconnection();
-                    erpRequestor.getReceiptHeaders(atDate);
+                    erpRequestor.getCashDocs(atDate);
                     result = erpRequestor.getHeads();
                     if (result == null || result.isEmpty()) {
                         hasError = true;
@@ -74,6 +77,8 @@ public class StartUI extends HttpServlet {
                 } catch (JCoException jex) {
                     jex.printStackTrace();
                 }
+                break;
+            case "PRINT":
                 break;
             case "HISTORY":
                 break;
@@ -92,9 +97,9 @@ public class StartUI extends HttpServlet {
         String json = gson.toJson(result);
         // Create the response in the JSON format
         response.getWriter().println(json);
-        //        String pageName = "index.html";
+//        String pageName = "index.html";
         // response in the HTML form
-//        response.getWriter().println(pageGenerator.getPage(pageName, pageVariables));
+//        response.getWriter().println(pageGenerator.getPage("index.html", pageVariables));
 
     } // end of doPost
 
@@ -106,6 +111,7 @@ public class StartUI extends HttpServlet {
         pageVariables.put("day", strDate[0]);
         pageVariables.put("atDate", request.getParameter("atDate"));
         pageVariables.put("btnRead", request.getParameter("btnRead"));
+        pageVariables.put("btnPrint", request.getParameter("btnPrint"));
         pageVariables.put("btnHistory", request.getParameter("btnHistory"));
         pageVariables.put("btnZ", request.getParameter("btnZ"));
         pageVariables.put("result", result);

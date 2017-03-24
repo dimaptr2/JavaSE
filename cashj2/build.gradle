@@ -34,20 +34,23 @@ dependencies {
 
     // General Javax API
     compile group: 'javax', name: 'javaee-web-api', version: '7.0'
-
 }
 
 // Build an executable java archive
 jar {
     baseName = 'cashj2'
+    version = version
     manifest {
         attributes(
-                'Implementation-Title': 'Cash Journal',
-                'Implementation-Version': version,
                 'Main-Class': mainClassName,
                 'Class-Path': configurations.compile.collect { 'lib/' + it.getName() }.join(' ')
         )
     }
+}
+
+// compile sources and build a JAR file
+task buildJar(type: Jar) {
+
 }
 
 // Copy an executable jar to the dist/ directory
@@ -65,4 +68,9 @@ task copyLibs(type: Copy) {
 task copyPublic(type: Copy) {
     from 'public_html/'
     into '/dist/public_html'
+}
+
+// Full clearing
+task refreshProject(type: Delete) {
+    delete 'build', 'dist'
 }

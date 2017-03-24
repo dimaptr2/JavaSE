@@ -17,12 +17,16 @@ $( function() {
 //    click in the buttons
 // Read data from SAP
    $("#btnRead").click(function(event) {
-    //   $("#main-table").remove();
+
       var headTable = "<table id=\"main-table\" class=\"responstable\"\> \
       <tr> \
-      <th>№ ордера</th><th>Краткое описание</th><th>Дата проводки</th> \
+      <th>№ п/п</th> \
+      <th>Приходный ордер</th><th>Краткое описание</th><th>Дата проводки</th> \
       <th>Поставка</th><th>Сумма</th> \
+      <th>s</th> \
       </tr> \
+      <tbody id=\"body-area\"> \
+      </tbody> \
       </table>";
       $("#middle").html(headTable);
 
@@ -30,22 +34,33 @@ $( function() {
       var btnVal = $("#btnRead").val();
       // POST request to the servlet with parameters
       $.post("/cj", {"atDate": dt, "btnRead": btnVal}, function(data) {
-          if(!data) {
-              for (var i = 0; i < data.length; i++) {
-                  var answer = $.parseJSON(data[i]);
-                  $("#main-table").append("<tr>");
-                  $("#main-table").append("<td>" + answer.postingNumber + "</td>");
-                  $("#main-table").append("<td>" + answer.positionText + "</td>");
-                  $("#main-table").append("<td>" + answer.postingDate + "</td>");
-                  $("#main-table").append("<td>" + answer.deliveryId + "</td>");
-                  $("#main-table").append("<td>" + answer.amount + "</td>");
-                  $("#main-table").append("</tr>");
-              }
-          } else {
-              alert("failure");
+          var keys = ["postingNumber", "positionText", "postingDate", "deliveryId", "amount"];
+          var result = JSON.stringify(data, keys);
+          var collection = JSON.parse(result);
+          if (collection.length > 0) {
+              for (var i = 0; i < collection.length; i++) {
+                  var counter = i + 1;
+                  $("#body-area").append("<tr>");
+                  $("#body-area").append("<td>" + counter + "</td>");
+                  $("#body-area").append("<td>" + collection[i].postingNumber + "</td>");
+                  $("#body-area").append("<td>" + collection[i].positionText + "</td>");
+                  $("#body-area").append("<td>" + collection[i].postingDate + "</td>");
+                  // build links for deliveries
+                  $("#body-area").append("<td>" + collection[i].deliveryId + "</td>");
+                  $("#body-area").append("<td>" + collection[i].amount + "</td>");
+                  $("#body-area").append("<td><input type=\"checkbox\" class=\"checked\"></td>")
+                  $("#body-area").append("</tr>");
+                }
           }
       });
-   });
+
+    }); // button read
+
+    //   Click for printing values, that could were selected
+    $("#btnPrint").click(function(event) {
+//       var table = $("#main-table");
+       alert("Click!");
+    });
 
 // Read receipts from database
    $("#btnHistory").click(function(event) {
@@ -61,14 +76,4 @@ $( function() {
          $("#main-table").remove();
    });
 
-});
-
-//          $("#middle").append("<#list result as row>\n");
-//          $("#middle").append("<tr>\n");
-//          $("#middle").append("<td>${row.postingNumber}</td>\n");
-//          $("#middle").append("<td>${row.positionText}</td>\n");
-//          $("#middle").append("<td>${row.postingDate}</td>\n");
-//          $("#middle").append("<td>${row.deliveryId}</td>\n");
-//          $("#middle").append("<td>${row.amount}</td>\n");
-//          $("#middle").append("</tr>\n");
-//          $("#middle").append("<#/list>\n");
+}); // end of all JQuery functions in the page index.html

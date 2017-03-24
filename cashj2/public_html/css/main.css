@@ -105,9 +105,16 @@ input2 {
     width: 70%;
     height: 70%;
     text-align: center;
-    border: 1px solid lightgrey;
+    border: none;
 }
 
+/*.progressbar {
+    position: absolute;
+    bottom: 1;
+    margin: auto;
+    padding: 1px;
+    border: 1px solid lightgrey ;
+} */
 
 .footer-style {
     position: absolute;
@@ -127,7 +134,6 @@ input2 {
 .responstable {
   margin: 1em 0;
   width: 100%;
-  overflow: hidden;
   background: #FFF;
   color: #024457;
   border-radius: 10px;
@@ -220,4 +226,9 @@ h1 {
 
 h1 span {
   color: blue;
+}
+
+/* clicked field */
+.clicked {
+    color: darkblue;
 }

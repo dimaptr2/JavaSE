@@ -1,11 +1,8 @@
 package ru.velkomfood.fin.cash.controller;
 
-import com.sap.conn.jco.JCoDestination;
-import com.sap.conn.jco.JCoDestinationManager;
-import com.sap.conn.jco.JCoException;
-import com.sap.conn.jco.JCoFunction;
+import com.sap.conn.jco.*;
 import com.sap.conn.jco.ext.DestinationDataProvider;
-import ru.velkomfood.fin.cash.model.HeadReceiptOrder;
+import ru.velkomfood.fin.cash.model.CashDoc;
 import ru.velkomfood.fin.cash.model.ItemReceiptOrder;
 
 import java.io.File;
@@ -18,12 +15,12 @@ import java.util.*;
  */
 public class ErpRequestor {
 
-    final static String DEST_NAME = "PRD500";
+    final static String DEST_NAME = "PRD500RUPS11";
     private static ErpRequestor instance;
     private Properties connectionProperties;
     private JCoDestination destination;
 
-    private List<HeadReceiptOrder> heads;
+    private List<CashDoc> heads;
     private List<ItemReceiptOrder> items;
 
     private ErpRequestor() {
@@ -69,7 +66,7 @@ public class ErpRequestor {
         destination = JCoDestinationManager.getDestination(DEST_NAME);
     }
 
-    public void getReceiptHeaders(String dt) throws JCoException {
+    public void getCashDocs(String dt) throws JCoException {
 
         StringBuilder sb = new StringBuilder(0);
 
@@ -84,26 +81,55 @@ public class ErpRequestor {
             sb.append(dateSplit[2]).append(dateSplit[1]).append(dateSplit[0]);
         }
 
-
-        JCoFunction rfcGetReceipts = destination.getRepository().getFunction("Z_RFC_GET_CASHDOC");
-        if (rfcGetReceipts == null) {
-            throw new RuntimeException("Cannot found function Z_RFC_GET_CASHDOC");
-        }
-        
-
         if (!heads.isEmpty()) {
             heads.clear();
         }
 
-        if (!heads.isEmpty()) {
-            getReceiptItems();
+        // Define RFC function in the SAP Repository, if it exists, then we can invoke it
+        JCoFunction rfcGetReceipts = destination.getRepository().getFunction("Z_RFC_GET_CASHDOC");
+        if (rfcGetReceipts == null) {
+            throw new RuntimeException("Cannot found function Z_RFC_GET_CASHDOC");
         }
-    }
+        rfcGetReceipts.getImportParameterList().setValue("I_COMP_CODE", "1000");
+        rfcGetReceipts.getImportParameterList().setValue("I_CAJO_NUMBER", "1000");
+        rfcGetReceipts.getImportParameterList().setValue("FROM_DATE", sb.toString());
+        rfcGetReceipts.getImportParameterList().setValue("TO_DATE", sb.toString());
+        rfcGetReceipts.execute(destination);
+        JCoTable docs = rfcGetReceipts.getTableParameterList().getTable("T_CJ_DOCS");
+        if (docs.getNumRows() > 0) {
+            for (int i = 0; i < docs.getNumRows(); i++) {
+                docs.setRow(i);
+                String posText = docs.getString("POSITION_TEXT");
+                if (posText == null) {
+                    continue;
+                }
+                if (!posText.equals("") && posText.charAt(0) == '8') {
+                    CashDoc cashDoc = new CashDoc();
+                    cashDoc.setCajoNumber(docs.getString("CAJO_NUMBER"));
+                    cashDoc.setCompanyCode(docs.getInt("COMP_CODE"));
+                    cashDoc.setFiscalYear(docs.getInt("FISC_YEAR"));
+                    cashDoc.setPostingNumber(docs.getLong("POSTING_NUMBER"));
+                    cashDoc.setPostingDate(docs.getString("POSTING_DATE"));
+                    cashDoc.setPositionText(posText);
+                    String[] textElems = posText.split(" ");
+                    long deliveryNumber = Long.parseLong(textElems[0]);
+                    cashDoc.setDeliveryId(deliveryNumber);
+                    cashDoc.setAmount(docs.getBigDecimal("H_NET_AMOUNT"));
+                    heads.add(cashDoc);
+                }
+            }
+            JCoTable likp = rfcGetReceipts.getTableParameterList().getTable("T_LIKP");
+            getReceiptOrders(likp);
+            JCoTable lips = rfcGetReceipts.getTableParameterList().getTable("T_LIPS");
+            getReceiptItems(lips);
+        }
+
+    } // get heads
 
 
 
     // Main getters
-    public List<HeadReceiptOrder> getHeads() {
+    public List<CashDoc> getHeads() {
         return heads;
     }
 
@@ -112,10 +138,21 @@ public class ErpRequestor {
     }
 
     // Additional methods
-    private void getReceiptItems() throws JCoException {
+    private void getReceiptOrders(JCoTable rItem) throws JCoException {
+
+    }
+
+    private void getReceiptItems(JCoTable rItem) throws JCoException {
+
         if (!items.isEmpty()) {
             items.clear();
         }
-    }
+
+        if (rItem.getNumRows() > 0) {
+            for (int q = 0; q < rItem.getNumRows(); q++) {
+                rItem.setRow(q);
+            }
+        }
+    } // get items
 
 }

@@ -5,9 +5,8 @@ import java.math.BigDecimal;
 /**
  * Created by dpetrov on 13.03.2017.
  */
-public class HeadReceiptOrder {
+public class CashDoc {
 
-    private long counter;
     private String cajoNumber;
     private int companyCode;
     private int fiscalYear;
@@ -16,14 +15,6 @@ public class HeadReceiptOrder {
     private String positionText;
     private long deliveryId;
     private BigDecimal amount;
-
-    public long getCounter() {
-        return counter;
-    }
-
-    public void setCounter(long counter) {
-        this.counter = counter;
-    }
 
     public String getCajoNumber() {
         return cajoNumber;
@@ -95,7 +86,7 @@ public class HeadReceiptOrder {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        HeadReceiptOrder that = (HeadReceiptOrder) o;
+        CashDoc that = (CashDoc) o;
 
         if (companyCode != that.companyCode) return false;
         if (fiscalYear != that.fiscalYear) return false;
@@ -126,7 +117,7 @@ public class HeadReceiptOrder {
     @Override
     public String toString() {
 
-        return "HeadReceiptOrder{" +
+        return "CashDoc{" +
                 "cajoNumber='" + cajoNumber + '\'' +
                 ", companyCode=" + companyCode +
                 ", fiscalYear=" + fiscalYear +
