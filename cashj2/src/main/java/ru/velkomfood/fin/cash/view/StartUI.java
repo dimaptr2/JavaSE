@@ -30,9 +30,9 @@ public class StartUI extends HttpServlet {
                       HttpServletResponse response) throws ServletException, IOException {
 
         Map<String, Object> pageVariables = createPageVariablesMap(request);
-        response.getWriter().println(pageGenerator.getPage("index.html", pageVariables));
         response.setContentType("text/html;charset=utf-8");
         response.setStatus(HttpServletResponse.SC_OK);
+        response.getWriter().println(pageGenerator.getPage("index.html", pageVariables));
 
     } // end of doGet
 
@@ -77,8 +77,6 @@ public class StartUI extends HttpServlet {
                 } catch (JCoException jex) {
                     jex.printStackTrace();
                 }
-                break;
-            case "PRINT":
                 break;
             case "HISTORY":
                 break;

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <title>Receipt</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/main.css">
+    <script src="js/jquery.js"></script>
+    <script src="js/item.js"></script>
+</head>
+<body>
+    <div class="wrapper">
+        <div id="top">
+            <header class="top-header">
+                <h1>Печатная форма: приходный ордер ${pNumb}, исходящая поставка ${delId}</h1>
+            </header>
+        </div>
+        <nav id="left" class="left-panel-style">
+            <button id="btnPrint" value="PRINT" class="button1 button2">
+                Печать
+            </button>
+        </nav>
+        <div id="output" class="data-area-style">
+            <table id="receipt" class="responstable">
+                <thead>
+                    <tr>
+                        <th>Наименование</th>
+                        <th>Количество</th>
+                        <th>Сумма</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <#list result as row>
+                        <tr>
+                            <td>${row.materialName}</td>
+                            <td>${row.quantity}</td>
+                            <td>${row.amount}</td>
+                        </tr>
+                    </#list>
+                </tbody>
+            </table>
+        </div>
+        <!--<div id="buttons">-->
+            <!--<button id="cmdPrint" value="PRINT" class="button1 button2 left-align-button">-->
+                <!--Печать-->
+            <!--</button>-->
+        <!--</div>-->
+        <!--<div id="bottom">-->
+            <!--<footer class="footer-style">-->
+                <!--<p>-->
+                    <!--ООО МК "Павловская Слобода", 143581, Московская область, Истринский р-н, с. Павловская Слобода, ул. Ленина, д. 75-->
+                <!--</p>-->
+            <!--</footer>-->
+        <!--</div>-->
+    </div>
+</body>
+</html>
