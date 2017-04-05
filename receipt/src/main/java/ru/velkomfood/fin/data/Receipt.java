@@ -1,5 +1,6 @@
 package ru.velkomfood.fin.data;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import java.util.List;
 public class Receipt {
 
     private long id;
+    private long actualAmount;
     // Items
     private List<ReceiptItem> items;
 
@@ -22,6 +24,14 @@ public class Receipt {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public long getActualAmount() {
+        return actualAmount;
+    }
+
+    public void setActualAmount(BigDecimal actualAmount) {
+        this.actualAmount = actualAmount.longValue();
     }
 
     public List<ReceiptItem> getItems() {

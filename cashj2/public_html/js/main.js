@@ -105,20 +105,31 @@ $( function() {
       $("#main-table").remove();
    });
 
-   $("#btnPrint").click(function(event) {
-
-   });
 
 // Print the Z-report
    $("#btnZ").click(function(event) {
       $("#main-table").remove();
-      var now = new Date();
+       var dt = $("#atDate").val();
+       if (dt === null) {
+           alert("Выберите число");
+           return;
+       }
+      var cmd = $("#btnZ").val();
+      $.post("/cj", {"atDate": dt, "btnZ": cmd}, function(data) {
+
+      });
    });
 
    $("#btnClean").click(function(event) {
       $("#main-table").remove();
    });
 
+   // Print the receipt
+    $("#cmdPrint").click(function (event) {
+        var cmd = $("#cmdPrint").val();
+        $.post("/items", {"cmdPrint": cmd}, function(data) {
 
+        });
+    });
 
 }); // end of all JQuery functions in the page index.html

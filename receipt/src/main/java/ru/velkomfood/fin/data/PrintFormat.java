@@ -18,7 +18,7 @@ public class PrintFormat implements IPrintForm {
                 for (ReceiptItem ri: receipt.getItems()) {
                     double itemQuantity = ri.getQuantity().doubleValue();
                     if (denominator != 0.00) {
-                        double proportion =  itemQuantity / denominator;
+                        double proportion =  1 / (itemQuantity * denominator);
                         double sum = amount * proportion;
                         BigDecimal totalSum = new BigDecimal(sum);
                         ri.setAmount(totalSum);

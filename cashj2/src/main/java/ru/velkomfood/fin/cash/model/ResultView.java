@@ -33,4 +33,5 @@ public class ResultView {
         this.amount = amount;
     }
 
+
 }

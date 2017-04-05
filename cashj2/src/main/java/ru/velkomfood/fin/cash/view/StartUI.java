@@ -2,7 +2,9 @@ package ru.velkomfood.fin.cash.view;
 
 import com.google.gson.Gson;
 import com.sap.conn.jco.JCoException;
+import drvfr_print.jpos.res.JVelPrinter;
 import ru.velkomfood.fin.cash.controller.ErpRequestor;
+import ru.velkomfood.fin.cash.controller.PrintEngine;
 import ru.velkomfood.fin.cash.model.CashDoc;
 
 import javax.servlet.ServletException;
@@ -23,6 +25,7 @@ public class StartUI extends HttpServlet {
 
     private PageGenerator pageGenerator = PageGenerator.getInstance();
     private ErpRequestor erpRequestor = ErpRequestor.getInstance();
+    private PrintEngine printEngine = PrintEngine.getInstance();
     private List<CashDoc> result;
 
     @Override
@@ -53,10 +56,6 @@ public class StartUI extends HttpServlet {
             buttonCode = String.valueOf(pageVariables.get("btnRead"));
         }
 
-        if (pageVariables.get("btnPrint") != null) {
-            buttonCode = String.valueOf(pageVariables.get("btnPrint"));
-        }
-
         if (pageVariables.get("btnHistory") != null) {
             buttonCode = String.valueOf(pageVariables.get("btnHistory"));
         }
@@ -81,6 +80,15 @@ public class StartUI extends HttpServlet {
             case "HISTORY":
                 break;
             case "ZREPORT":
+                try {
+                    printEngine.openDevice();
+                    JVelPrinter printer = printEngine.getPrinter();
+                    printer.connect();
+                    printer.cancelCurReceipt();
+                    printer.reportZ();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
         }
 
@@ -109,7 +117,6 @@ public class StartUI extends HttpServlet {
         pageVariables.put("day", strDate[0]);
         pageVariables.put("atDate", request.getParameter("atDate"));
         pageVariables.put("btnRead", request.getParameter("btnRead"));
-        pageVariables.put("btnPrint", request.getParameter("btnPrint"));
         pageVariables.put("btnHistory", request.getParameter("btnHistory"));
         pageVariables.put("btnZ", request.getParameter("btnZ"));
         pageVariables.put("result", result);

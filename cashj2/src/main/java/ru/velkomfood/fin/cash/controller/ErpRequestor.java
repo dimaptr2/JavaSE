@@ -27,6 +27,7 @@ public class ErpRequestor {
     // Customers
     // Outgoing delivery (head and items)
     private Map<Long, Receipt> receipts;
+    private Map<Long, BigDecimal[]> sums;
     // Cash Journal documents
     private List<CashDoc> heads;
 
@@ -34,6 +35,7 @@ public class ErpRequestor {
         materials =  new ConcurrentHashMap<>();
         heads = new ArrayList<>();
         receipts = new ConcurrentHashMap<>();
+        sums = new ConcurrentHashMap<>();
         connectionProperties = new Properties();
         connectionProperties.setProperty(DestinationDataProvider.JCO_ASHOST, "");
         connectionProperties.setProperty(DestinationDataProvider.JCO_SYSNR, "");
@@ -96,8 +98,6 @@ public class ErpRequestor {
         // Multiple remote function calls
         try {
             JCoContext.begin(destination);
-            // Get materials and customers master records
-            getMaterialNames();
             // Define RFC function in the SAP Repository, if it exists, then we can invoke it
             JCoFunction rfcGetReceipts = destination.getRepository().getFunction("Z_RFC_GET_CASHDOC");
             if (rfcGetReceipts == null) {
@@ -141,6 +141,47 @@ public class ErpRequestor {
 
     } // get heads
 
+    // Get all positions from sales order and build the receipt image.
+    public Receipt getReceiptPrintingForm(long dNumber) throws JCoException {
+
+        Receipt rc = new Receipt();
+        BigDecimal sum = new BigDecimal(0.00);
+        rc.setId(dNumber);
+
+        JCoFunction rfcSdInfo = destination.getRepository().getFunction("Z_RFC_CASHDOC_SD_INFO");
+        if (rfcSdInfo == null) {
+            throw new RuntimeException("Cannot found function Z_RFC_CASHDOC_SD_INFO");
+        }
+
+        // Build the internal number for SAP
+        String txtDeliveryId = transformNumber(String.valueOf(dNumber));
+        if (!txtDeliveryId.equals("not")) {
+            rfcSdInfo.getImportParameterList().setValue("I_VBELN", txtDeliveryId);
+            rfcSdInfo.execute(destination);
+            Map<String, BigDecimal> sdHash = new LinkedHashMap<>();
+            JCoTable itab = rfcSdInfo.getTableParameterList().getTable("T_ITEMS");
+            if (itab.getNumRows() > 0) {
+                for (int i = 0; i < itab.getNumRows(); i++) {
+                    itab.setRow(i);
+                    sdHash.put(itab.getString("MATNR"), itab.getBigDecimal("NETWR"));
+                }
+                if (!sdHash.isEmpty()) {
+                    if (!receipts.get(dNumber).getItems().isEmpty()) {
+                        for (ReceiptItem ri: receipts.get(dNumber).getItems()) {
+                            BigDecimal amount = sdHash.get(ri.getMaterial());
+                            ri.setAmount(amount);
+                            sum = sum.add(amount.multiply(ri.getQuantity()));
+                            rc.addItem(ri);
+                        }
+                        sum = sum.setScale(2, BigDecimal.ROUND_DOWN);
+                    }
+                }
+            }
+        }
+
+        return rc;
+    }
+
     // Main getters
     public List<CashDoc> getHeads() {
         return heads;
@@ -150,46 +191,11 @@ public class ErpRequestor {
         return receipts;
     }
 
-// PRIVATE SECTION
-
-    private void getMaterialNames() throws JCoException {
-
-        JCoFunction bapiMatList = destination.getRepository().getFunction("BAPI_MATERIAL_GETLIST");
-        if (bapiMatList == null) {
-            throw new RuntimeException("Function BAPI_MATERIAL_GETLIST not found");
-        }
-
-        if (!materials.isEmpty()) {
-            materials.clear();
-        }
-
-        JCoTable matSelect = bapiMatList.getTableParameterList().getTable("MATNRSELECTION");
-        // Initialize selection parameters
-        matSelect.appendRow();
-        matSelect.setValue("SIGN", "I");
-        matSelect.setValue("OPTION", "BT");
-        matSelect.setValue("MATNR_LOW", "000000000000070002");
-        matSelect.setValue("MATNR_HIGH", "000000000000079999");
-        matSelect.appendRow();
-        matSelect.setValue("SIGN", "I");
-        matSelect.setValue("OPTION", "BT");
-        matSelect.setValue("MATNR_LOW", "000000000010000000");
-        matSelect.setValue("MATNR_HIGH", "000000000019999999");
-        matSelect.appendRow();
-        matSelect.setValue("SIGN", "I");
-        matSelect.setValue("OPTION", "BT");
-        matSelect.setValue("MATNR_LOW", "000000000020000000");
-        matSelect.setValue("MATNR_HIGH", "000000000029999999");
-        // Execute the function
-        bapiMatList.execute(destination);
-        JCoTable matList = bapiMatList.getTableParameterList().getTable("MATNRLIST");
-        if (matList.getNumRows() > 0) {
-            for (int i = 0; i < matList.getNumRows(); i++) {
-                matList.setRow(i);
-                materials.put(matList.getLong("MATERIAL"), matList.getString("MATL_DESC"));
-            }
-        }
+    public Map<Long, BigDecimal[]> getSums() {
+        return sums;
     }
+
+    // PRIVATE SECTION
 
     // Data from outgoing deliveries
     private void getReceiptOrders(JCoTable tabLikp, JCoTable tabLips) throws JCoException {
@@ -211,12 +217,11 @@ public class ErpRequestor {
                     ri.setPosition(tabLips.getLong("POSNR"));
                     String txtMaterial = tabLips.getString("MATNR");
                     ri.setMaterial(txtMaterial);
-                    ri.setMaterialName(materials.get(tabLips.getLong("MATNR")));
+                    ri.setMaterialName(tabLips.getString("ARKTX"));
                     ri.setQuantity(tabLips.getBigDecimal("NTGEW"));
                     // Amount initialization
                     ri.setAmount(new BigDecimal(0.00));
                     receipt.addItem(ri);
-
                 } // for
                 receipts.put(receipt.getId(), receipt);
             } // for
@@ -225,5 +230,24 @@ public class ErpRequestor {
         }
 
     } // get the head of delivery
+
+    // Alpha transformation (add initial zeroes to the number (value))
+    private String transformNumber(String value) {
+
+        StringBuilder sb = new StringBuilder(0);
+        final int MAX_LENGTH = 10;
+        int range = MAX_LENGTH - value.length();
+
+        if (range > 0) {
+            for (int i = 1; i <= range; i++) {
+                sb.append("0");
+            }
+            sb.append(value);
+        } else {
+            sb.append("not");
+        }
+
+        return sb.toString();
+    }
 
 }

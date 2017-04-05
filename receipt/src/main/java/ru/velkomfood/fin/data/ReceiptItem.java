@@ -62,6 +62,19 @@ public class ReceiptItem {
         this.amount = amount;
     }
 
+    // Special methods for printing purpose
+    public long getLongQuantity() {
+        BigDecimal thousand = new BigDecimal(1000.00);
+        long value = (quantity.multiply(thousand)).longValue();
+        return value;
+    }
+
+    public long getLongAmount() {
+        BigDecimal hundred = new BigDecimal(100.00);
+        long value = (amount.multiply(hundred)).longValue();
+        return value;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -90,14 +103,14 @@ public class ReceiptItem {
 
     @Override
     public String toString() {
-        return "ReceiptItem{" +
-                "receiptId=" + receiptId +
-                ", position=" + position +
-                ", material='" + material + '\'' +
-                ", materialName='" + materialName + '\'' +
-                ", quantity=" + quantity +
-                ", amount=" + amount +
-                '}';
+
+        StringBuilder sb = new StringBuilder(0);
+        sb.append("ReceiptItem{").append("receiptId=").append(receiptId).append("\r\n");
+        sb.append(", position=").append(position).append(", material=").append(material).append("\r\n");
+        sb.append(", materialName=").append(materialName).append(", quantity=").append(quantity).append("\r\n");
+        sb.append(", amount=").append(amount).append("}");
+        return sb.toString();
+
     }
 
 }
