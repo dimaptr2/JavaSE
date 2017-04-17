@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module external.linked.project.id="cashj2:main" external.linked.project.path="$MODULE_DIR$/../.." external.root.project.path="$MODULE_DIR$/../.." external.system.id="GRADLE" external.system.module.group="ru.velkomfood.fin.cash" external.system.module.type="sourceSet" external.system.module.version="2.2" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
+    <output url="file://$MODULE_DIR$/../../build/classes/main" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/../../src/main">
+      <sourceFolder url="file://$MODULE_DIR$/../../src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../src/main/resources" type="java-resource" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Gradle: jetty-all-9.4.2.v20170220-uber:jetty-all-9.4.2.v20170220-uber:9.4.2.v20170220" level="project" />
+    <orderEntry type="library" name="Gradle: mysql:mysql-connector-java:5.1.41" level="project" />
+    <orderEntry type="library" name="Gradle: com.sap:sapjco3:3.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.freemarker:freemarker:2.3.23" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.code.gson:gson:2.8.0" level="project" />
+    <orderEntry type="library" name="Gradle: DrvFRPrint:DrvFRPrint:" level="project" />
+    <orderEntry type="library" name="Gradle: RXTXcomm:RXTXcomm:" level="project" />
+    <orderEntry type="library" name="Gradle: shtrihjavapos:shtrihjavapos:" level="project" />
+    <orderEntry type="library" name="Gradle: xerces:xerces:" level="project" />
+    <orderEntry type="library" name="Gradle: ru.velkomfood.fin.data:receipt:1.7" level="project" />
+    <orderEntry type="library" name="Gradle: javax:javaee-web-api:7.0" level="project" />
+  </component>
+</module>

@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Gradle: jetty-all-9.4.2.v20170220-uber:jetty-all-9.4.2.v20170220-uber:9.4.2.v20170220">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/jetty-all-9.4.2.v20170220-uber.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

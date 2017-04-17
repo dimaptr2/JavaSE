@@ -1,0 +1,89 @@
+group 'ru.velkomfood.fin.cash'
+version '2.2'
+
+apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: 'idea'
+
+allprojects {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+}
+
+mainClassName = group + '.Launcher'
+
+repositories {
+    flatDir {
+        dirs 'lib'
+    }
+//    mavenCentral()
+}
+
+dependencies {
+
+    // Jetty full distribution
+    compile group: 'jetty-all-9.4.2.v20170220-uber', name: 'jetty-all-9.4.2.v20170220-uber', version: '9.4.2.v20170220'
+    // MySQL Java connector
+    compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.41'
+
+    // Templates generator
+    // SAP Java Connector
+    compile group: 'com.sap', name: 'sapjco3', version: '3.0'
+
+    compile group: 'org.freemarker', name: 'freemarker', version: '2.3.23'
+    // JSON generator
+    compile group: 'com.google.code.gson', name: 'gson', version: '2.8.0'
+
+    // Driver to fiscal gadget
+    compile group: 'DrvFRPrint', name: 'DrvFRPrint', version: ''
+
+    // Shtrih-M API
+    compile("RXTXcomm:RXTXcomm:")
+    compile("shtrihjavapos:shtrihjavapos:")
+    compile("xerces:xerces:")
+
+    // Local library for print forms
+    compile group: 'ru.velkomfood.fin.data', name: 'receipt', version: '1.7'
+
+    // General Javax API
+    compile group: 'javax', name: 'javaee-web-api', version: '7.0'
+}
+
+// Build an executable java archive
+jar {
+    baseName = 'cashj2'
+    version = version
+    manifest {
+        attributes(
+                'Main-Class': mainClassName,
+                'Class-Path': configurations.compile.collect { 'lib/' + it.getName() }.join(' ')
+        )
+    }
+}
+
+// compile sources and build a JAR file
+task buildJar(type: Jar) {
+
+}
+
+// Copy an executable jar to the dist/ directory
+task copyJar(type: Copy) {
+    from 'build/libs/cashj2-2.2.jar'
+    into '/dist'
+}
+
+// Copy dependencies to the dist/lib directory
+task copyLibs(type: Copy) {
+    from 'lib/'
+    into '/dist/lib'
+}
+
+task copyPublic(type: Copy) {
+    from 'public_html/'
+    into '/dist/public_html'
+}
+
+// Full clearing
+task refreshProject(type: Delete) {
+    delete 'build', 'dist'
+}
