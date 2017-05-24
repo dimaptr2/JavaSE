@@ -1,0 +1,54 @@
+group 'ru.velkomfood.infoman'
+version '2.1'
+
+apply plugin: 'java'
+apply plugin: 'application'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+mainClassName = group + '.Launcher'
+
+jar {
+    baseName = 'saploader'
+    version = version
+    manifest {
+        def space = ' '
+        def jar1 = 'lib/sapjco3.jar'
+        def jar2 = 'lib/mysql-connector-java-5.1.41.jar'
+        def jar3 = 'lib/ormlite-core-5.0.jar'
+        def jar4 = 'lib/ormlite-jdbc-5.0.jar'
+        attributes(
+                'Main-Class': mainClassName,
+                'Class-Path': jar1 + space + jar2 + space + jar3 + space + jar4
+        )
+    }
+}
+
+
+repositories {
+    flatDir {
+        dirs 'lib'
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'lib', include: '*.jar')
+//    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+// Additional tasks
+task createDist(type: Copy) {
+    from 'lib/sapjco3.jar', 'lib/libsapjco3.so', 'lib/mysql-connector-java-5.1.41.jar',
+            'lib/ormlite-core-5.0.jar', 'lib/ormlite-jdbc-5.0.jar'
+    into 'dist/lib'
+}
+
+task myJarToDist(type: Copy) {
+    from 'build/libs/' + 'saploader-' + version + '.jar'
+    into 'dist'
+}
+
+task refreshPro(type: Delete) {
+    delete 'build'
+    delete 'dist'
+}

@@ -1,0 +1,35 @@
+group 'org.iegs.beagle.manager'
+version '1.2'
+
+apply plugin: 'java'
+apply plugin: 'application'
+mainClassName = group + '.Launcher'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // MySQL JDBC driver
+    compile("mysql:mysql-connector-java:5.1.41")
+    // Hibernate
+    compile("org.hibernate:hibernate-core:5.2.10.Final")
+    compile("org.hibernate:hibernate-entitymanager:5.2.10.Final")
+    // JUnit testing
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+jar {
+    baseName = 'bgemu'
+    version = version
+    // Retrieve all dependencies and include its into my jar (Ueber-jar)
+    from configurations.compile.collect( { entry -> zipTree(entry) })
+    manifest {
+        attributes(
+                'Main-Class': mainClassName
+        )
+    }
+}
