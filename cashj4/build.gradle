@@ -1,0 +1,54 @@
+buildscript {
+    dependencies {
+        classpath group: 'de.dynamicfiles.projects.gradle.plugins', name: 'javafx-gradle-plugin', version: '8.8.2'
+    }
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+}
+
+group 'ru.velkomfood.fin.journals.cash'
+version '4.1'
+
+// My local variables
+def prjName = 'cashj4'
+def devPath1 = 'build/jfx/app/lib'
+def devPath2 = 'build/jfx/native/' + prjName + '-' + version + '/app/lib'
+
+apply plugin: 'java'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+// Here is the main gradle-plugin for the building the project
+apply plugin: 'javafx-gradle-plugin'
+
+dependencies {
+    compile fileTree(dir: 'lib', include: '*.jar')
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+// This is the main task for the creation of assemblies
+jfx {
+    mainClass = group + ".StartUI"
+    jfxMainAppJarName = prjName + "-" + version + ".jar"
+    vendor = "Velkom"
+    libFolderName = "lib"
+    useLibFolderContentForManifestClasspath = true
+}
+
+task copyLibraryJfx(type: Copy) {
+    from fileTree(dir: 'lib', includes: ['*.dll', '*.pdb', '*.mf'])
+    into devPath1
+}
+
+task copyNativeLibrary(type: Copy) {
+    from fileTree(dir: 'lib', includes: ['*.dll', '*.pdb', '*.mf'])
+    into devPath2
+}
