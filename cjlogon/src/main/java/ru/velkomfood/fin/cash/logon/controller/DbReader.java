@@ -19,11 +19,11 @@ public class DbReader {
 
     private DbReader() {
         MysqlDataSource ds = new MysqlDataSource();
-        ds.setServerName("srv-sapapp.eatmeat.ru");
+        ds.setServerName("");
         ds.setPort(3306);
-        ds.setDatabaseName("cj");
-        ds.setUser("finman");
-        ds.setPassword("12345678");
+        ds.setDatabaseName("");
+        ds.setUser("");
+        ds.setPassword("");
         dataSource = ds;
     }
 
