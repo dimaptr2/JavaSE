@@ -1,0 +1,23 @@
+/* Local style for the action screens */
+
+
+.top-label {
+    -fx-font-family: "RM Roman 8";
+    -fx-text-fill: #19abd3;
+    -fx-font-weight: bold;
+    -fx-font-style: italic;
+    -fx-font-size: 16px;
+}
+
+.sign-label {
+    -fx-font-family: "RM Roman 8";
+    -fx-text-fill: #19abd3;
+    -fx-font-weight: bold;
+    -fx-font-style: italic;
+    -fx-font-size: 14px;
+}
+
+.button {
+    -fx-pref-height: 26px;
+    -fx-pref-width: 198px;
+}

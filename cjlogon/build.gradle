@@ -1,0 +1,68 @@
+buildscript {
+    dependencies {
+        classpath group: 'de.dynamicfiles.projects.gradle.plugins', name: 'javafx-gradle-plugin', version: '8.8.2'
+    }
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+}
+
+group 'ru.velkomfood.fin.cash.logon'
+version '1.1'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    compile fileTree(dir: 'lib', include: '*.jar')
+    // MySQL connector
+    compile("mysql:mysql-connector-java:5.1.42")
+    // Java Reactive
+//    compile("io.reactivex.rxjava2:rxjava:2.1.2")
+
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+apply plugin: 'javafx-gradle-plugin'
+
+// For the including resources
+sourceSets {
+    main {
+        resources {
+            srcDirs = ["src/main/java", "src/main/resources"]
+            includes = ["**/*.fxml", "**/*.css"]
+        }
+    }
+}
+
+jfx {
+    verbose = true
+    mainClass = group + '.StartUI'
+    jfxMainAppJarName = 'cjlogon-' + version + '.jar'
+    vendor = 'Velkom'
+    libFolderName = 'lib'
+    useLibFolderContentForManifestClasspath = true
+}
+
+task copyNativeLibs(type: Copy) {
+    from 'lib'
+    into 'build/jfx/app/lib'
+}
+
+task createDistr(type: Copy) {
+    from 'build/jfx/app'
+    into 'dist'
+}
+
+task removeDistr(type: Delete) {
+    delete('dist')
+}

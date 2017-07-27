@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane id="mainBorderPain" fx:id="mainBorderPain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="528.0" prefWidth="1001.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.velkomfood.fin.cash.logon.StartUIController">
+   <top>
+      <HBox id="topHBox" fx:id="topHBox" alignment="TOP_CENTER" prefHeight="46.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label id="topLabel" fx:id="topLabel" alignment="CENTER" contentDisplay="CENTER" text="Приходно-расходные ордера ООО МК Павловская Слобода" textFill="#19abd3" wrapText="true">
+               <font>
+                  <Font name="LMRoman8-Italic" size="16.0" />
+               </font></Label>
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </BorderPane.margin>
+      </HBox>
+   </top>
+   <left>
+      <VBox id="leftVBox" fx:id="leftVBox" prefHeight="428.0" prefWidth="212.0" BorderPane.alignment="CENTER">
+         <children>
+            <DatePicker id="atDate" fx:id="atDate">
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+               <padding>
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+               </padding></DatePicker>
+            <Button id="btnReadDocs" fx:id="btnReadDocs" mnemonicParsing="false" onAction="#readCashDocuments" prefHeight="26.0" prefWidth="198.0" text="Загрузить ПКО">
+               <VBox.margin>
+                  <Insets bottom="2.0" left="5.0" right="2.0" top="2.0" />
+               </VBox.margin></Button>
+            <Button id="btnOpenSession" fx:id="btnOpenSession" layoutX="15.0" layoutY="55.0" mnemonicParsing="false" onAction="#openFiscalSession" prefHeight="26.0" prefWidth="198.0" text="Открыть смену">
+               <VBox.margin>
+                  <Insets bottom="2.0" left="5.0" right="2.0" top="2.0" />
+               </VBox.margin>
+            </Button>
+            <Button id="btnCloseSession" fx:id="btnCloseSession" layoutX="15.0" layoutY="82.0" mnemonicParsing="false" onAction="#closeFiscalSession" prefHeight="26.0" prefWidth="198.0" text="Закрыть смену">
+               <VBox.margin>
+                  <Insets bottom="2.0" left="5.0" right="2.0" top="2.0" />
+               </VBox.margin>
+            </Button>
+            <Button id="btnXReport" fx:id="btnXReport" layoutX="15.0" layoutY="112.0" mnemonicParsing="false" onAction="#getReportWithoutClearing" prefHeight="26.0" prefWidth="198.0" text="Отчёт без гашения">
+               <VBox.margin>
+                  <Insets bottom="2.0" left="5.0" right="2.0" top="2.0" />
+               </VBox.margin>
+            </Button>
+            <Button id="btnAboutDevice" fx:id="btnAboutDevice" layoutX="15.0" layoutY="142.0" mnemonicParsing="false" onAction="#testFiscalDevice" onKeyPressed="#pressKeyHandleEvent" prefHeight="26.0" prefWidth="198.0" text="Статус ФР">
+               <VBox.margin>
+                  <Insets bottom="2.0" left="5.0" right="2.0" top="2.0" />
+               </VBox.margin>
+            </Button>
+            <Button id="btnQuit" fx:id="btnQuit" layoutX="15.0" layoutY="172.0" mnemonicParsing="false" onAction="#closeWindow" onKeyPressed="#pressKeyHandleEvent" prefHeight="26.0" prefWidth="198.0" text="Выйти">
+               <VBox.margin>
+                  <Insets bottom="2.0" left="5.0" right="2.0" top="2.0" />
+               </VBox.margin>
+            </Button>
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </BorderPane.margin>
+      </VBox>
+   </left>
+   <center>
+      <TableView id="contentCashDocs" fx:id="contentCashDocs" onKeyPressed="#pressKeyHandleEvent" onMouseClicked="#mouseClickHandleOnTableRow" prefHeight="462.0" prefWidth="736.0" BorderPane.alignment="CENTER">
+        <columns>
+            <TableColumn id="counter" fx:id="counter" prefWidth="66.0" text="Номер" />
+          <TableColumn id="id" fx:id="id" prefWidth="128.0" text="ПКО" />
+            <TableColumn id="postingDate" fx:id="postingDate" prefWidth="82.0" text="Дата проводки" />
+            <TableColumn id="positionText" fx:id="positionText" prefWidth="60.0" text="Текст" />
+            <TableColumn id="deliveryId" fx:id="deliveryId" prefWidth="117.0" text="Накладная" />
+            <TableColumn id="amount" fx:id="amount" prefWidth="101.0" text="Сумма" />
+            <TableColumn id="receiptAmount" fx:id="receiptAmount" prefWidth="111.0" text="По накладной" />
+            <TableColumn id="difference" fx:id="difference" prefWidth="98.0" text="Сальдо" />
+        </columns>
+         <BorderPane.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </BorderPane.margin>
+      </TableView>
+   </center>
+</BorderPane>
