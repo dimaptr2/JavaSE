@@ -1,54 +1,48 @@
-group 'ru.velkomfood.infoman'
-version '2.1'
+group 'ru.velkomfood.mysap.data'
+version '3.1'
 
 apply plugin: 'java'
 apply plugin: 'application'
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
 mainClassName = group + '.Launcher'
 
-jar {
-    baseName = 'saploader'
-    version = version
-    manifest {
-        def space = ' '
-        def jar1 = 'lib/sapjco3.jar'
-        def jar2 = 'lib/mysql-connector-java-5.1.41.jar'
-        def jar3 = 'lib/ormlite-core-5.0.jar'
-        def jar4 = 'lib/ormlite-jdbc-5.0.jar'
-        attributes(
-                'Main-Class': mainClassName,
-                'Class-Path': jar1 + space + jar2 + space + jar3 + space + jar4
-        )
-    }
-}
-
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 repositories {
-    flatDir {
-        dirs 'lib'
-    }
+    mavenLocal()
+    mavenCentral()
 }
 
 dependencies {
     compile fileTree(dir: 'lib', include: '*.jar')
-//    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
-// Additional tasks
-task createDist(type: Copy) {
-    from 'lib/sapjco3.jar', 'lib/libsapjco3.so', 'lib/mysql-connector-java-5.1.41.jar',
-            'lib/ormlite-core-5.0.jar', 'lib/ormlite-jdbc-5.0.jar'
-    into 'dist/lib'
+jar {
+    baseName = project.name
+    version = project.version
+    def basePath = 'lib/mysql-connector-java-5.1.43.jar lib/sapjco3.jar'
+    def ormLite = 'lib/ormlite-core-5.0.jar lib/ormlite-jdbc-5.0.jar'
+    def generalPath = basePath + ' ' + ormLite
+    manifest {
+        attributes(
+                'Class-Path': generalPath,
+                'Main-Class': mainClassName
+        )
+    }
 }
 
-task myJarToDist(type: Copy) {
-    from 'build/libs/' + 'saploader-' + version + '.jar'
+task copyJarDependencies(type: Copy) {
+    from fileTree(dir: 'lib', includes: ['*.jar', '*.so'])
+    into 'build/libs/lib'
+}
+
+task createDistr(type: Copy) {
+    from 'build/libs'
     into 'dist'
 }
 
-task refreshPro(type: Delete) {
-    delete 'build'
+task removeDistr(type: Delete) {
     delete 'dist'
 }
