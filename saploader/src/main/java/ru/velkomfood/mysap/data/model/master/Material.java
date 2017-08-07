@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 @DatabaseTable(tableName = "materials")
 public class Material implements Serializable {
 
-    @DatabaseField(id = true, dataType = DataType.BIG_INTEGER)
+    @DatabaseField(id = true, dataType = DataType.LONG)
     private long id;
     @DatabaseField(dataType = DataType.STRING, width = 50)
     private String description;

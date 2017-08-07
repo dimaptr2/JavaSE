@@ -10,9 +10,9 @@ import ru.velkomfood.mysap.data.model.master.*;
 import java.io.IOException;
 import java.sql.SQLException;
 
-public class DbWriter {
+public class DbWriterMaster {
 
-    private SapReader sapReader;
+    private static DbWriterMaster instance;
     private boolean firstStart;
     private final String DB_URL = "jdbc:mysql://localhost:3306/sapcache?user=saper&password=12345678";
     private JdbcConnectionSource connectionSource;
@@ -27,50 +27,34 @@ public class DbWriter {
     private Dao<Customer, String> customerDAO;
     private Dao<Vendor, String> vendorDAO;
 
-    public DbWriter(SapReader sapReader) {
+    private DbWriterMaster() {
         firstStart = true;
-        this.sapReader = sapReader;
     }
 
-    public void start() {
-
-        System.out.println("DB Writer");
-
-        try {
-            openConnection();
-            if (firstStart) {
-                initDatabase();
-            }
-            closeConnection();
-        } catch (SQLException | IOException sqle) {
-            sqle.printStackTrace();
+    public static DbWriterMaster getInstance() {
+        if (instance == null) {
+            instance = new DbWriterMaster();
         }
-
+        return instance;
     }
 
 
-    public class takeMasterData extends Thread {
-
+    public boolean isFirstStart() {
+        return firstStart;
     }
 
-    public class takeTransactionData extends Thread {
-
-    }
-
-    // Internal classes
-
-    private void openConnection() throws SQLException {
+    public void openConnection() throws SQLException {
         connectionSource = new JdbcPooledConnectionSource(DB_URL);
     }
 
-    private void closeConnection() throws SQLException, IOException {
+    public void closeConnection() throws SQLException, IOException {
         if (connectionSource != null) {
             connectionSource.close();
         }
     }
 
 
-    private void initDatabase() throws SQLException {
+    public void initDatabase() throws SQLException {
 
         TableUtils.createTableIfNotExists(connectionSource, Channel.class);
         TableUtils.createTableIfNotExists(connectionSource, Company.class);
