@@ -1,56 +1,50 @@
-group 'ru.velkomfood.mysap.info'
+group 'ru.velkomfood.mysap.service'
 version '1.1'
 
 apply plugin: 'java'
 apply plugin: 'application'
+mainClassName = group + '.Launcher'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
-mainClassName = group + '.Launcher'
-
-jar {
-    baseName = 'sapintegro'
-    version = version
-    manifest {
-        def space = ' '
-        def sapJar = 'lib/sapjco3.jar'
-        def mySqlJar = 'lib/mysql-connector-java-5.1.41.jar'
-        attributes(
-                'Main-Class': mainClassName,
-                'Class-Path': sapJar + space + mySqlJar
-        )
-    }
-}
 
 repositories {
-    flatDir {
-        dirs 'lib'
-    }
+    mavenCentral()
 }
 
 dependencies {
     compile fileTree(dir: 'lib', include: '*.jar')
-//    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
-// Build the distribution
-task createDist(type: Copy) {
-    from    'lib/sapjco3.jar', 'lib/libsapjco3.so',
-            'lib/mysql-connector-java-5.1.41.jar'
-    into 'dist/lib'
+jar {
+
+    baseName = project.name
+    version = project.version
+
+    def depTree = fileTree(dir: 'lib')
+    depTree.include '**/*.jar'
+    depTree.exclude '**/*.so'
+
+    def myClassPath = ''
+    // Build the list with the classpath variables
+    depTree.each { file -> myClassPath += ('lib/' + file.name + ' ') }
+
+    manifest {
+        attributes(
+                'Main-Class': mainClassName,
+                'Class-Path': myClassPath
+        )
+    }
+
 }
 
-task copyTargetJar(type: Copy) {
-    from 'build/libs/' + 'sapintegro-' + version + '.jar'
-    into 'dist'
+task copyLibraries(type: Copy) {
+    from fileTree(dir: 'lib', includes: ['*.jar', '*.so'])
+    into 'build/libs/lib'
 }
 
-task copyProperties(type: Copy) {
-    from 'settings/config.properties'
-    into 'dist/settings'
-}
-
-task refreshPro(type: Delete) {
-    delete 'build'
-    delete 'dist'
+task copyPublicFolder(type: Copy) {
+    from 'public'
+    into 'build/libs/public'
 }
