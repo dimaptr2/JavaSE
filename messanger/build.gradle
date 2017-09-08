@@ -1,0 +1,46 @@
+group 'ru.velkomfood.dms.info'
+version '3.1'
+
+apply plugin: 'java'
+apply plugin: 'application'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+mainClassName = project.group + '.Launcher'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile fileTree(dir: 'lib', include: '*.jar')
+//    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+jar {
+
+    baseName = project.name
+    version = project.version
+
+    def depTree = fileTree(dir: 'lib')
+    depTree.include '**/*.jar'
+    depTree.exclude '**/*.so'
+
+    def myClassPath = ''
+    // Build the list with the classpath variables
+    depTree.each { file -> myClassPath += ('lib/' + file.name + ' ') }
+
+    manifest {
+        attributes(
+                'Main-Class': mainClassName,
+                'Class-Path': myClassPath
+        )
+    }
+
+}
+
+task copyDependencies(type: Copy) {
+    from fileTree(dir: 'lib', includes: ['*.jar', '*.so'])
+    into 'build/libs/lib'
+}
