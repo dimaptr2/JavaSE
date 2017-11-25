@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/bintree.iml" filepath="$PROJECT_DIR$/.idea/modules/bintree.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/bintree_main.iml" filepath="$PROJECT_DIR$/.idea/modules/bintree_main.iml" group="bintree" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/bintree_test.iml" filepath="$PROJECT_DIR$/.idea/modules/bintree_test.iml" group="bintree" />
+    </modules>
+  </component>
+</project>

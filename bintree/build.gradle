@@ -1,0 +1,29 @@
+group 'org.iegs.math.trees'
+version '1.1'
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'application'
+
+mainClassName = project.group + '.Launcher'
+
+sourceCompatibility = 1.9
+targetCompatibility = 1.9
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+jar {
+    baseName = project.name
+    version = project.version
+    manifest {
+        attributes(
+                'Main-Class': mainClassName
+        )
+    }
+}
