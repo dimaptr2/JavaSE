@@ -24,6 +24,10 @@
 
     <build>
 
+        <plugins>
+
+        </plugins>
+
     </build>
 
 </project>
