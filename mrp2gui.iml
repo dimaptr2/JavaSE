@@ -11,5 +11,15 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module-library">
+      <library name="Maven: sapjco3:sapjco3:3.0">
+        <CLASSES>
+          <root url="jar:///usr/sap/JCo/sapjco3.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="library" name="Maven: com.sleepycat:je:7.5.11" level="project" />
   </component>
 </module>
