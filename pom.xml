@@ -26,6 +26,26 @@
 
         <plugins>
 
+            <!--Maven compiler plugin-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+
+            <!--ZenJava plugin (jar and native builder for JavaFX)-->
+            <plugin>
+                <groupId>com.zenjava</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>${mvn.javafx.plugin}</version>
+                <configuration>
+                    <mainClass>${project.groupId}.StartUI</mainClass>
+                </configuration>
+            </plugin>
+
         </plugins>
 
     </build>
