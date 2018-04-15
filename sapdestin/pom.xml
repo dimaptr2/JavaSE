@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.iegs.services.sap.destinator</groupId>
+    <artifactId>sapdestin</artifactId>
+    <version>2.1</version>
+
+    <properties>
+        <java.version>1.10</java.version>
+        <sapjco3>/Applications/sap/JCo/sapjco3.jar</sapjco3>
+    </properties>
+
+    <dependencies>
+
+        <!--SAP Java Connector-->
+        <dependency>
+            <groupId>sapjco3</groupId>
+            <artifactId>sapjco3</artifactId>
+            <version>3.0</version>
+            <scope>system</scope>
+            <systemPath>${sapjco3}</systemPath>
+        </dependency>
+
+        <!--Lightweight logger-->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.3</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!--Maven compiler plugin-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.7.0</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+            <!--Maven shade plugin-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.1.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>${project.groupId}.Launcher</mainClass>
+                                    <manifestEntries>
+                                        <Class-Path>${sapjco3}</Class-Path>
+                                    </manifestEntries>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
