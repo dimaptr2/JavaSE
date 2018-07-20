@@ -1,0 +1,34 @@
+buildscript {
+    ext {
+        stax_api_version = '1.0-2'
+    }
+}
+
+plugins {
+    id 'java'
+}
+
+group 'ru.velkomfood.stax.stream.processor'
+version '1.0.4'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile "javax.xml.stream:stax-api:$stax_api_version"
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+jar {
+    baseName = project.name
+    version = project.version
+    manifest {
+        attributes(
+                'Implementation-Version': version
+        )
+    }
+    from configurations.compile.collect() { it.isDirectory() ? it : zipTree(it) }
+}
