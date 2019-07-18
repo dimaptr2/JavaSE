@@ -1,0 +1,47 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'io.spring.dependency-management' version '1.0.7.RELEASE'
+    id 'com.github.johnrengelman.shadow' version '5.1.0'
+}
+
+ext {
+    sapJavaConnectorPath = '/usr/sap/JCo'
+    projectReactorNettyVersion = '0.8.9.RELEASE'
+}
+
+group 'ru.velkomfood.sap.document.server'
+version '12.0.1'
+mainClassName = group + '.Launcher'
+def sapTree = fileTree(dir: sapJavaConnectorPath, includes: ['sapjco3.jar'])
+
+sourceCompatibility = 12
+targetCompatibility = 12
+
+repositories {
+    maven { url = uri('https://repo.spring.io/milestone') }
+    maven { url = uri('https://repo.spring.io/snapshot') }
+    mavenCentral()
+}
+
+dependencies {
+    // SAP Java Connector
+    compileOnly sapTree
+    // Project Reactor dependencies
+    implementation("io.projectreactor.netty:reactor-netty:$projectReactorNettyVersion")
+
+    // For testing purposes
+    testCompileOnly sapTree
+    testRuntimeOnly sapTree
+    
+}
+
+// create a fat jar
+shadowJar {
+    manifest {
+        attributes('Implementation-Version' : project.version)
+        attributes('Main-Class' : mainClassName)
+        attributes('Class-Path' : (sapJavaConnectorPath + '/' + 'sapjco3.jar'))
+    }
+}
+
