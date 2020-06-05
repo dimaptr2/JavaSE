@@ -21,7 +21,7 @@ application {
 }
 
 // Path to the external libraries and its dependency file tree
-def sapJavaConnector = path to the sapjco3.jar
+def sapJavaConnector = '/usr/sap/JCo'
 def sapLibTree = fileTree(dir: sapJavaConnector, includes: ['sapjco3.jar'])
 // Versions of dependencies
 def slf4jVersion = '1.7.30'

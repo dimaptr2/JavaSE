@@ -181,24 +181,42 @@ public class DataReaderImpl implements DataReader {
         }, this.executor);
     }
 
+    // Z_RFC_GET_MARD2 an old RFM
+    // Z_RFC_GET_MARD3 a new RFM
     @Override
     public CompletableFuture<Void> readStocks() {
         return CompletableFuture.runAsync(() -> {
             final JCoDestination destination = this.createDestination();
             if (destination != null && destination.isValid()) {
                 try {
-                    var rfcMard2 = destination.getRepository().getFunction("Z_RFC_GET_MARD2");
+                    var rfcMard3 = destination.getRepository().getFunction("Z_RFC_GET_MARD3");
                     final String plant = this.parameters.getProperty("sap.plant");
+                    final String[] warehouses = this.parameters
+                            .getProperty("sap.store.place.range1")
+                            .split(";");
+                    final List<String> ids = this.buildIdSequence(this.eventBus.getMaterialCache());
+                    final String lowMaterial = this.alphaTransformation(18, ids.get(0));
+                    final String highMaterial = this.alphaTransformation(18, ids.get(ids.size() - 1));
+                    ids.clear();
                     LocalDate currentDate = LocalDate.now();
                     int period = currentDate.getMonthValue();
                     int currentYear = currentDate.getYear();
                     for (int idx = 1; idx <= period; idx++) {
-                        rfcMard2.getImportParameterList().setValue("I_WERKS", plant);
-                        rfcMard2.getImportParameterList().setValue("I_YEAR", currentYear);
+                        rfcMard3.getImportParameterList().setValue("I_WERKS", plant);
+                        rfcMard3.getImportParameterList().setValue("I_YEAR", currentYear);
                         String monthTextValue = this.alphaTransformation(2, String.valueOf(idx));
-                        rfcMard2.getImportParameterList().setValue("I_MONTH", monthTextValue);
-                        rfcMard2.execute(destination);
-                        var tabMard = rfcMard2.getTableParameterList().getTable("T_MARD");
+                        rfcMard3.getImportParameterList().setValue("I_MONTH", monthTextValue);
+                        rfcMard3.getImportParameterList().setValue("FROM_MATNR", lowMaterial);
+                        rfcMard3.getImportParameterList().setValue("TO_MATNR", highMaterial);
+                        var tabStorePlaces = rfcMard3.getTableParameterList().getTable("T_STORE_PLACE");
+                        for (String whs : warehouses) {
+                            tabStorePlaces.appendRow();
+                            tabStorePlaces.setValue("SIGN", "I");
+                            tabStorePlaces.setValue("OPTION", "EQ");
+                            tabStorePlaces.setValue("LOW", whs);
+                        }
+                        rfcMard3.execute(destination);
+                        var tabMard = rfcMard3.getTableParameterList().getTable("T_MARD");
                         if (tabMard.getNumRows() > 0) {
                             do {
                                 var id = tabMard.getString("MATNR");
@@ -223,8 +241,9 @@ public class DataReaderImpl implements DataReader {
                                 this.eventBus.push("stock.queue", stock);
                             } while (tabMard.nextRow());
                             tabMard.clear();
-                        }
-                    }
+                        } // if the number rows > 0
+                        tabStorePlaces.clear();
+                    } // cycle by periods
                 } catch (JCoException ex) {
                     log.error(ex.getMessage());
                 }
